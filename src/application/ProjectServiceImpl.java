@@ -42,7 +42,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
 	@Override
 	protected void saveDataToDB() {
 
-		// dataList의 모든 Account를 DB에 저장
+		// dataList의 모든 Project를 DB에 저장
 		
 	}
 

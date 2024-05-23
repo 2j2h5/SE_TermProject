@@ -2,7 +2,6 @@ package application;
 
 import domain.Issue;
 import domain.IssueService;
-import domain.Project;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +61,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	@Override
 	protected void saveDataToDB() {
 
-		// dataList의 모든 Account를 DB에 저장
+		// dataList의 모든 Issue를 DB에 저장
 		
 	}
 

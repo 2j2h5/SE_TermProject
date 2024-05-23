@@ -2,7 +2,6 @@ package application;
 
 import domain.Comment;
 import domain.CommentService;
-import domain.Issue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +20,7 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 	}
 	
 	@Override
-	public void requestAdd() {
+	public void requestMake() {
 		
 	}
 
@@ -29,7 +28,7 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 	protected List<Comment> loadDataFromDB() {
 		List<Comment> comments = new ArrayList<>();
 		
-		//DB의 모든 Issue를 불러옴
+		//DB의 모든 Comment를 불러옴
 		
 		return comments;
 	}
@@ -37,7 +36,7 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 	@Override
 	protected void saveDataToDB() {
 
-		// dataList의 모든 Account를 DB에 저장
+		// dataList의 모든 Comment를 DB에 저장
 		
 	}
 

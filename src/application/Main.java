@@ -1,10 +1,14 @@
 package application;
 
+import ui.SwingMainFrame;
+
 public class Main {
 	public static void main(String[] args) {
-		// setting ProjectManagementSystem
+		Application app = new Application();
+		app.init();
 		
-		// setting Swing UI
+		SwingMainFrame swingUI = new SwingMainFrame(app);
+		swingUI.display();
 	}
 
 }
