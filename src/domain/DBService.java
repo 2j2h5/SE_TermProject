@@ -24,7 +24,7 @@ public class DBService {
         }
     }
 
-    // 연결된 데이터베이스 커넥션 반환
+    // 연결된 데이터베이스 커넥션 반환(다른 클래스에서 데이터베이스 접근하려면 필요한 메서드)
     public Connection getConnection() {
         return conn;
     }
