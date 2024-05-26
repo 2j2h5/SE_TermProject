@@ -3,6 +3,7 @@ package application;
 import domain.DBService;
 import domain.Issue;
 import domain.IssueService;
+import exceptions.ValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +12,44 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueService {
 	
 	// constructor
+	public IssueServiceImpl() {
+		this.loadDataFromDB();
+    }
 	
 	// variables
 	
 	// methods
 	@Override
 	public boolean checkValidation() {
-		return true;
+		String title = (String) attributeDict.get("title");
+        String description = (String) attributeDict.get("description");
+        
+        if (title == null || title.isEmpty()) return false;
+        if (description == null || description.isEmpty()) return false;
+
+        return true;
 	}
 	
 	@Override
-	public void requestMake() {
-		
+	public void requestMake() throws ValidationException {
+		if (this.checkValidation()) {
+			String title = (String) attributeDict.get("title");
+	        String description = (String) attributeDict.get("description");
+	        String priority = (String) attributeDict.get("priority");
+	        int involvedProject = (int) attributeDict.get("involvedProject");
+	        String reporter = currentId;
+	        String reportedDate = LocalDateTime.now().format(dateFormatter);
+	        String state = "new";
+	        
+			dataList.add(new Issue(title, description, priority, involvedProject, reporter, reportedDate, state));
+		} else {
+			throw new ValidationException("Validation failed");
+		}
 	}
 	
 	@Override
@@ -79,7 +102,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
        	 		String fixer = resultSet.getString("fixer");
        	 		String assignee = resultSet.getString("assginee");
        	 		
-        		Issue issue = new Issue(title, description, priority, involvedProject);
+        		Issue issue = new Issue(title, description, priority, involvedProject, reporter, reportedDate, state);
         		issue.setReporter(reporter);
         		issue.setReportedDate(reportedDate);
         		issue.setState(state);

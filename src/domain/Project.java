@@ -7,7 +7,7 @@ public class Project {
 		this.id = ++count;
 	}
 	
-	public Project(String name, String description, int responsiblePL) {
+	public Project(String name, String description, String responsiblePL) {
 		this.id = ++count;
 		this.name = name;
 		this.description = description;
@@ -19,7 +19,7 @@ public class Project {
 	private int id;
 	private String name;
 	private String description;
-	private int responsiblePL;
+	private String responsiblePL;
 	
 	// methods
 	public int getCount() {
@@ -38,7 +38,7 @@ public class Project {
 		return description;
 	}
 	
-	public int getResponsiblePL() {
+	public String getResponsiblePL() {
 		return responsiblePL;
 	}
 

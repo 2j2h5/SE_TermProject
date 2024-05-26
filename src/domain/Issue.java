@@ -7,12 +7,14 @@ public class Issue {
 		this.id = ++count;
 	}
 	
-	public Issue(String title, String description, String priority, int involvedProject) {
+	public Issue(String title, String description, String priority, int involvedProject, String reporter, String reportedDate, String state) {
 		this.id = ++count;
 		this.title = title;
 		this.description = description;
 		this.priority = priority;
 		this.involvedProject = involvedProject;
+		this.reporter = reporter;
+		this.reportedDate = reportedDate;
 	}
 	
 	// variables

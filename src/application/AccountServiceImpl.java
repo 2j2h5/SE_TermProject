@@ -17,7 +17,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 	
 	// constructor
 	public AccountServiceImpl() {
-		
+		this.loadDataFromDB();
     }
 
 	// variables
@@ -25,11 +25,17 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 	// methods
 	@Override
 	public boolean checkValidation() {
-		String id = ((String) attributeDict.get("ID")).trim();
-        String password = ((String) attributeDict.get("password")).trim();
+		String id = (String) attributeDict.get("ID");
+        String password = (String) attributeDict.get("password");
         
-        if (id == null) return false;
-        if (password == null) return false;
+        if (id == null || id.isEmpty()) return false;
+        if (password == null || password.isEmpty()) return false;
+        
+        for (Account account : dataList) {
+        	if (account.getId().equals(id) ) {
+        		return false;
+        	}
+        }
 
         return true;
 	}
@@ -37,10 +43,10 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 	@Override
 	public void requestMake() throws ValidationException {
 		if (this.checkValidation()) {
-			String id = ((String) attributeDict.get("ID")).trim();
-	        String password = ((String) attributeDict.get("password")).trim();
-			Account newAccount = new Account(id, password);
-			dataList.add(newAccount);
+			String id = (String) attributeDict.get("ID");
+	        String password = (String) attributeDict.get("password");
+	        
+			dataList.add(new Account(id, password));
 		} else {
 			throw new ValidationException("Validation failed");
 		}

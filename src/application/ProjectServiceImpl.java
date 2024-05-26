@@ -3,6 +3,7 @@ package application;
 import domain.DBService;
 import domain.Project;
 import domain.ProjectService;
+import exceptions.ValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,9 @@ import java.sql.SQLException;
 public class ProjectServiceImpl extends BaseServiceImpl<Project> implements ProjectService {
 	
 	// constructor
+	public ProjectServiceImpl() {
+		this.loadDataFromDB();
+    }
 
 	// variables
 	
@@ -22,12 +26,27 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
 	// methods
 	@Override
 	public boolean checkValidation() {
-		return true;
+		String name = (String) attributeDict.get("name");
+        //String description = (String) attributeDict.get("description");
+        String responsiblePL = (String) attributeDict.get("responsiblePL");
+        
+        if (name == null || name.isEmpty()) return false;
+        if (responsiblePL == null || responsiblePL.isEmpty()) return false;
+
+        return true;
 	}
 	
 	@Override
-	public void requestMake() {
-		
+	public void requestMake() throws ValidationException {
+		if (this.checkValidation()) {
+			String name = (String) attributeDict.get("name");
+	        String description = (String) attributeDict.get("description");
+	        String responsiblePL = (String) attributeDict.get("responsiblePL");
+	        
+			dataList.add(new Project(name, description, responsiblePL));
+		} else {
+			throw new ValidationException("Validation failed");
+		}
 	}
 	
 	
@@ -52,7 +71,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
     		while (resultSet.next()) {
         		String name = resultSet.getString("name");
         		String description = resultSet.getString("description");
-        		int responsiblePL = resultSet.getInt("responsiblePL");
+        		String responsiblePL = resultSet.getString("responsiblePL");
         		
         		Project project = new Project(name, description, responsiblePL);
         		
@@ -84,7 +103,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
     			statement.setInt(1, project.getId());
         		statement.setString(2, project.getName());
         		statement.setString(3, project.getDescription());
-        		statement.setInt(4, project.getResponsiblePL());
+        		statement.setString(4, project.getResponsiblePL());
         		
         		statement.executeUpdate();
        	 }

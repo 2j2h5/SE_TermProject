@@ -3,6 +3,7 @@ package application;
 import domain.Comment;
 import domain.CommentService;
 import domain.DBService;
+import exceptions.ValidationException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +12,42 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDateTime;
 
 public class CommentServiceImpl extends BaseServiceImpl<Comment> implements CommentService {
 	
 	// constructor
+	public CommentServiceImpl() {
+		this.loadDataFromDB();
+	}
 	
 	// variables
 
 	// methods
 	@Override
 	public boolean checkValidation() {
-		return true;
+		String content = (String) attributeDict.get("content");
+        //String writer = (String) attributeDict.get("writer");
+        //String writedDate = (String) attributeDict.get("writedDate");
+        //int involvedIssue = (int) attributeDict.get("involvedIssue");
+        
+        if (content == null || content.isEmpty()) return false;
+
+        return true;
 	}
 	
 	@Override
-	public void requestMake() {
-		
+	public void requestMake() throws ValidationException {
+		if (this.checkValidation()) {
+			String content = (String) attributeDict.get("content");
+	        String writer = currentId;
+	        String writedDate = LocalDateTime.now().format(dateFormatter);
+	        int involvedIssue = (int) attributeDict.get("involvedIssue");
+	        
+			dataList.add(new Comment(content, writer, writedDate, involvedIssue));
+		} else {
+			throw new ValidationException("Validation failed");
+		}
 	}
 
 	@Override
