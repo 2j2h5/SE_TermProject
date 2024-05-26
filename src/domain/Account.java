@@ -7,18 +7,18 @@ public class Account {
 		
 	}
 	
-	public Account(String ID, String password) {
-		this.ID = ID;
+	public Account(String id, String password) {
+		this.id = id;
 		this.password = password;
 	}
 	
 	// variables
-	private String ID;
+	private String id;
 	private String password;
 	
 	// methods
-	public String getID() {
-		return ID;
+	public String getId() {
+		return id;
 	}
 	
 	public String getPassword() {

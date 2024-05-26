@@ -4,10 +4,11 @@ public class Issue {
 	
 	// constructor
 	public Issue() {
-		
+		this.id = ++count;
 	}
 	
-	public Issue(String title, String description, String priority, Project involvedProject) {
+	public Issue(String title, String description, String priority, int involvedProject) {
+		this.id = ++count;
 		this.title = title;
 		this.description = description;
 		this.priority = priority;
@@ -15,22 +16,32 @@ public class Issue {
 	}
 	
 	// variables
+	private int count = 0;
+	private int id;
 	private String title;
 	private String description;
 	private String priority;
-	private Project involvedProject;
-	private Account reporter;
+	private int involvedProject;
+	private String reporter;
 	private String reportedDate;
 	private String state;
-	private Account fixer;
-	private Account assignee;
+	private String fixer;
+	private String assignee;
 	
 	// methods
+	public int getCount() {
+		return count;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
 	public String getTitle() {
 		return title;
 	}
 	
-	public String getDesc() {
+	public String getDescription() {
 		return description;
 	}
 	
@@ -38,11 +49,11 @@ public class Issue {
 		return priority;
 	}
 	
-	public Project getProject() {
+	public int getProject() {
 		return involvedProject;
 	}
 	
-	public Account getReporter() {
+	public String getReporter() {
 		return reporter;
 	}
 	
@@ -54,16 +65,16 @@ public class Issue {
 		return state;
 	}
 	
-	public Account getFixer() {
+	public String getFixer() {
 		return fixer;
 	}
 	
-	public Account getAssignee() {
+	public String getAssignee() {
 		return assignee;
 	}
 	
-	public void setReporter(Account reporter) {
-		this.reporter = reporter;
+	public void setReporter(String reporterId) {
+		this.reporter = reporterId;
 	}
 	
 	public void setReportedDate(String reportedDate) {
@@ -74,11 +85,11 @@ public class Issue {
 		this.state = state;
 	}
 	
-	public void setFixer(Account fixer) {
-		this.fixer = fixer;
+	public void setFixer(String fixerId) {
+		this.fixer = fixerId;
 	}
 	
-	public void setAssignee(Account assignee) {
-		this.assignee = assignee;
+	public void setAssignee(String assigneeId) {
+		this.assignee = assigneeId;
 	}
 }

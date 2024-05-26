@@ -1,11 +1,11 @@
 package application;
 
+import domain.DBService;
 import domain.Issue;
 import domain.IssueService;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -20,7 +20,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	
 	// methods
 	@Override
-	public boolean checkValidation(Map<String, Object> attributeDict) {
+	public boolean checkValidation() {
 		return true;
 	}
 	
@@ -58,38 +58,44 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	protected List<Issue> loadDataFromDB() {
 		List<Issue> issues = new ArrayList<>();
 		
-		//DB의 모든 Issue를 불러옴
-		// 데이터베이스 연결
-        	DBService dbService = new DBService();
-        	Connection conn = dbService.getConnection();
+    	DBService dbService = new DBService();
+    	Connection conn = dbService.getConnection();
 
-       		try {
-            		// SQL 쿼리
-            		String sql = "SELECT * FROM issues";
+   		try {
+    		String sql = "SELECT * FROM issues";
 
-            		// SQL 문 실행
-            		PreparedStatement statement = conn.prepareStatement(sql);
-            		ResultSet resultSet = statement.executeQuery();
+    		PreparedStatement statement = conn.prepareStatement(sql);
+    		ResultSet resultSet = statement.executeQuery();
 
-            		// 결과
-            		while (resultSet.next()) {
-                		String name = resultSet.getString("name");
-                		String description = resultSet.getString("description");
-               	 		String responsiblePL = resultSet.getString("responsiblePL");
+    		// 결과
+    		while (resultSet.next()) {
+        		String title = resultSet.getString("title");
+        		String description = resultSet.getString("description");
+       	 		String priority = resultSet.getString("priority");
+       	 		int involvedProject = resultSet.getInt("involvedProject");
+       	 		String reporter = resultSet.getString("reporter");
+       	 		String reportedDate = resultSet.getString("reportedDate");
+       	 		String state = resultSet.getString("state");
+       	 		String fixer = resultSet.getString("fixer");
+       	 		String assignee = resultSet.getString("assginee");
+       	 		
+        		Issue issue = new Issue(title, description, priority, involvedProject);
+        		issue.setReporter(reporter);
+        		issue.setReportedDate(reportedDate);
+        		issue.setState(state);
+        		issue.setFixer(fixer);
+        		issue.setAssignee(assignee);
+        		
+        		issues.add(issue);
+    		}
 
-                		// Issue 객체 생성 후 리스트에 추가
-                		Issue issue = new Issue(name, description, responsiblePL);
-                		issues.add(issue);
-            		}
-
-            		resultSet.close();
-            		statement.close();
-        		} catch (SQLException e) {
-            			e.printStackTrace();
-        		} finally {
-           			// 연결 종료
-            			dbService.closeConnection();
-        		}
+    		resultSet.close();
+    		statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			dbService.closeConnection();
+		}
 		
 		return issues;
 	}
@@ -100,28 +106,35 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 		// dataList의 모든 Issue를 DB에 저장
 		// DB 연결
 		DBService dbService = new DBService();
-        	Connection conn = dbService.getConnection();
+    	Connection conn = dbService.getConnection();
 
-        	try {
-           	 	// SQL문
-            		String sql = "INSERT INTO issues (name, description, responsiblePL) VALUES (?, ?, ?)";
+    	try {
+   	 	// SQL문
+    		String sql = "INSERT INTO issues (id, title, description, priority, involvedProject, reporter, reportedDate, state, fixer, assignee) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            		// SQL 문 실행 후 저장
-            		PreparedStatement statement = conn.prepareStatement(sql);
-            		for (Issue issue : dataList) {
-                		statement.setString(1, issue.getName());
-                		statement.setString(2, issue.getDescription());
-                		statement.setString(3, issue.getResponsiblePL());
-                		statement.executeUpdate();
-           		}
+    		// SQL 문 실행 후 저장
+    		PreparedStatement statement = conn.prepareStatement(sql);
+    		for (Issue issue : dataList) {
+    			statement.setInt(1, issue.getId());
+        		statement.setString(2, issue.getTitle());
+        		statement.setString(3, issue.getDescription());
+        		statement.setString(4, issue.getPriority());
+        		statement.setInt(5, issue.getProject());
+        		statement.setString(6, issue.getReporter());
+        		statement.setString(7, issue.getReportedDate());
+        		statement.setString(8, issue.getState());
+        		statement.setString(9, issue.getFixer());
+        		statement.setString(10, issue.getAssignee());
+        		statement.executeUpdate();
+   		}
 
-            		statement.close();
-        		} catch (SQLException e) {
-            			e.printStackTrace();
-        		} finally {
-            		// 연결 종료
-            		dbService.closeConnection();
-        		}
+    		statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+    		// 연결 종료
+    		dbService.closeConnection();
+		}
 		
 	}
 

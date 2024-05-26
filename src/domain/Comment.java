@@ -4,28 +4,39 @@ public class Comment {
 	
 	// constructor
 	public Comment() {
-		
+		this.id = ++count;
 	}
 	
-	public Comment(String content, Account writer, String writedDate, Issue involvedIssue) {
+	public Comment(String content, String writerId, String writedDate, int involvedIssue) {
+		this.id = ++count;
 		this.content = content;
-		this.writer = writer;
+		this.writer = writerId;
 		this.writedDate = writedDate;
 		this.involvedIssue = involvedIssue;
 	}
 	
 	// variables
+	private static int count = 0;
+	private int id;
 	private String content;
-	private Account writer;
+	private String writer;
 	private String writedDate;
-	private Issue involvedIssue; 
+	private int involvedIssue; 
 	
 	// methods
+	public int getCount() {
+		return count;
+	}
+	
+	public int getId() {
+		return id;
+	}
+	
 	public String getContent() {
 		return content;
 	}
 	
-	public Account getWriter() {
+	public String getWriter() {
 		return writer;
 	}
 	
@@ -33,7 +44,7 @@ public class Comment {
 		return writedDate;
 	}
 	
-	public Issue getIssue() {
+	public int getIssue() {
 		return involvedIssue;
 	}
 

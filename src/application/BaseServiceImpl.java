@@ -22,9 +22,6 @@ public abstract class BaseServiceImpl<T> implements BaseService {
 	}
 	
 	@Override
-	public abstract boolean checkValidation(Map<String, Object> attributeDict);
-	
-	@Override
 	public void loadDB() {
 		dataList = loadDataFromDB();
 	}

@@ -1,8 +1,10 @@
 package domain;
 
+import exceptions.ValidationException;
+
 public interface AccountService extends BaseService {
 	
 	// interfaces
-	void requestMake();
+	void requestMake() throws ValidationException;
 
 }
