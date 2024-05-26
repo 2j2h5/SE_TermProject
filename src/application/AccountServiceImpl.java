@@ -27,7 +27,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 	// methods
 	@Override
 	public boolean checkValidation() {
-		String id = (String) attributeDict.get("ID");
+		String id = (String) attributeDict.get("id");
         String password = (String) attributeDict.get("password");
         
         if (id == null || id.isEmpty()) return false;
@@ -45,7 +45,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 	@Override
 	public void requestMake() throws ValidationException {
 		if (this.checkValidation()) {
-			String id = (String) attributeDict.get("ID");
+			String id = (String) attributeDict.get("id");
 	        String password = (String) attributeDict.get("password");
 	        
 			dataList.add(new Account(id, password));
@@ -94,17 +94,29 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
     	Connection conn = dbService.getConnection();
 
     	try {
-    		String sql = "INSERT INTO accounts (id, password) VALUES (?, ?)";
+    		String checkSql = "SELECT COUNT(*) FROM accounts WHERE id = ?";
+    		String insertSql = "INSERT INTO accounts (id, password) VALUES (?, ?)";
 
-    		PreparedStatement statement = conn.prepareStatement(sql);
+    		PreparedStatement checkStatement = conn.prepareStatement(checkSql);
+    		PreparedStatement insertStatement = conn.prepareStatement(insertSql);
     		for (Account account : dataList) {
-        		statement.setString(1, account.getId());
-        		statement.setString(2, account.getPassword());
-        		
-        		statement.executeUpdate();
+    			checkStatement.setString(1, account.getId());
+    			ResultSet rs = checkStatement.executeQuery();
+    			rs.next();
+    			int count = rs.getInt(1);
+    			rs.close();
+    			
+    			if (count == 0) {
+    				insertStatement.setString(1, account.getId());
+            		insertStatement.setString(2, account.getPassword());
+            		
+            		insertStatement.executeUpdate();
+    			}
     		}
 
-    		statement.close();
+    		checkStatement.close();
+    		insertStatement.close();
+    		
     	} catch (SQLException e) {
     		e.printStackTrace();
     	} finally {

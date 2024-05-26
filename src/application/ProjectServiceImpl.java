@@ -98,19 +98,31 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
     	Connection conn = dbService.getConnection();
 
     	try {
-    		String sql = "INSERT INTO projects (id, name, description, responsiblePL) VALUES (?, ?, ?, ?)";
+    		String checkSql = "SELECT COUNT(*) FROM projects WHERE id = ?";
+    		String insertSql = "INSERT INTO projects (id, name, description, responsiblePL) VALUES (?, ?, ?, ?)";
 
-    		PreparedStatement statement = conn.prepareStatement(sql);
+    		PreparedStatement checkStatement = conn.prepareStatement(checkSql);
+    		PreparedStatement insertStatement = conn.prepareStatement(insertSql);
     		for (Project project : dataList) {
-    			statement.setInt(1, project.getId());
-        		statement.setString(2, project.getName());
-        		statement.setString(3, project.getDescription());
-        		statement.setString(4, project.getResponsiblePL());
-        		
-        		statement.executeUpdate();
-       	 }
-
-        	statement.close();
+    			checkStatement.setInt(1, project.getId());
+    			ResultSet rs = checkStatement.executeQuery();
+    			rs.next();
+    			int count = rs.getInt(1);
+    			rs.close();
+    			
+    			if (count == 0) {
+	    			insertStatement.setInt(1, project.getId());
+	        		insertStatement.setString(2, project.getName());
+	        		insertStatement.setString(3, project.getDescription());
+	        		insertStatement.setString(4, project.getResponsiblePL());
+	        		
+	        		insertStatement.executeUpdate();
+    			}
+       	 	}
+    		
+			checkStatement.close();
+			insertStatement.close();
+			
     	} catch (SQLException e) {
             e.printStackTrace();
     	} finally {

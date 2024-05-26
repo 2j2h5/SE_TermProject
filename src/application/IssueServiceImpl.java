@@ -171,37 +171,45 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 
 	@Override
 	protected void saveDataToDB() {
-
-		// dataList의 모든 Issue를 DB에 저장
-		// DB 연결
+		
 		DBService dbService = new DBService();
     	Connection conn = dbService.getConnection();
 
     	try {
-   	 	// SQL문
-    		String sql = "INSERT INTO issues (id, title, description, priority, involvedProject, reporter, reportedDate, state, fixer, assignee) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    		String checkSql = "SELECT COUNT(*) FROM issues WHERE id = ?";
+    		String insertSql = "INSERT INTO issues (id, title, description, priority, involvedProject, reporter, reportedDate, state, fixer, assignee) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    		// SQL 문 실행 후 저장
-    		PreparedStatement statement = conn.prepareStatement(sql);
+    		PreparedStatement checkStatement = conn.prepareStatement(checkSql);
+    		PreparedStatement insertStatement = conn.prepareStatement(insertSql);
     		for (Issue issue : dataList) {
-    			statement.setInt(1, issue.getId());
-        		statement.setString(2, issue.getTitle());
-        		statement.setString(3, issue.getDescription());
-        		statement.setString(4, issue.getPriority());
-        		statement.setInt(5, issue.getProject());
-        		statement.setString(6, issue.getReporter());
-        		statement.setString(7, issue.getReportedDate());
-        		statement.setString(8, issue.getState());
-        		statement.setString(9, issue.getFixer());
-        		statement.setString(10, issue.getAssignee());
-        		statement.executeUpdate();
-   		}
+    			checkStatement.setInt(1, issue.getId());
+    			ResultSet rs = checkStatement.executeQuery();
+    			rs.next();
+    			int count = rs.getInt(1);
+    			rs.close();
+    			
+    			if (count == 0) {
+	    			insertStatement.setInt(1, issue.getId());
+	        		insertStatement.setString(2, issue.getTitle());
+	        		insertStatement.setString(3, issue.getDescription());
+	        		insertStatement.setString(4, issue.getPriority());
+	        		insertStatement.setInt(5, issue.getProject());
+	        		insertStatement.setString(6, issue.getReporter());
+	        		insertStatement.setString(7, issue.getReportedDate());
+	        		insertStatement.setString(8, issue.getState());
+	        		insertStatement.setString(9, issue.getFixer());
+	        		insertStatement.setString(10, issue.getAssignee());
+	        		
+	        		insertStatement.executeUpdate();
+    			}
+    		}
 
-    		statement.close();
+    		checkStatement.close();
+    		insertStatement.close();
+    		
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
-    		// 연결 종료
     		dbService.closeConnection();
 		}
 		

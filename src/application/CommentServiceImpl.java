@@ -93,20 +93,32 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
     	Connection conn = dbService.getConnection();
 
     	try {
-    		String sql = "INSERT INTO comments (id, content, writer, writedDate, involvedIssue) VALUES (?, ?, ?, ?)";
+    		String checkSql = "SELECT COUNT(*) FROM comments WHERE id = ?";
+    		String insertSql = "INSERT INTO comments (id, content, writer, writedDate, involvedIssue) VALUES (?, ?, ?, ?)";
 
-    		PreparedStatement statement = conn.prepareStatement(sql);
+    		PreparedStatement checkStatement = conn.prepareStatement(checkSql);
+    		PreparedStatement insertStatement = conn.prepareStatement(insertSql);
     		for (Comment comment : dataList) {
-    			statement.setInt(1, comment.getId());
-        		statement.setString(2, comment.getContent());
-        		statement.setString(3, comment.getWriter());
-        		statement.setString(4, comment.getWritedDate());
-        		statement.setInt(5, comment.getIssue());
-        		
-        		statement.executeUpdate();
+    			checkStatement.setInt(1, comment.getId());
+    			ResultSet rs = checkStatement.executeQuery();
+    			rs.next();
+    			int count = rs.getInt(1);
+    			rs.close();
+    			
+    			if (count == 0) {
+	    			insertStatement.setInt(1, comment.getId());
+	        		insertStatement.setString(2, comment.getContent());
+	        		insertStatement.setString(3, comment.getWriter());
+	        		insertStatement.setString(4, comment.getWritedDate());
+	        		insertStatement.setInt(5, comment.getIssue());
+	        		
+	        		insertStatement.executeUpdate();
+    			}
     		}
 
-    		statement.close();
+    		checkStatement.close();
+    		insertStatement.close();
+    		
     	} catch (SQLException e) {
     		e.printStackTrace();
     	} finally {
