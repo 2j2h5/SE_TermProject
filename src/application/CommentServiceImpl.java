@@ -17,12 +17,14 @@ import java.time.LocalDateTime;
 public class CommentServiceImpl extends BaseServiceImpl<Comment> implements CommentService {
 	
 	// constructor
-	public CommentServiceImpl() {
+	public CommentServiceImpl(Application app) {
+		this.app = app;
 		this.loadDataFromDB();
 	}
 	
 	// variables
-
+	Application app;
+	
 	// methods
 	@Override
 	public boolean checkValidation() {

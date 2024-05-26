@@ -16,11 +16,13 @@ import java.sql.SQLException;
 public class AccountServiceImpl extends BaseServiceImpl<Account> implements AccountService {
 	
 	// constructor
-	public AccountServiceImpl() {
+	public AccountServiceImpl(Application app) {
+		this.app = app;
 		this.loadDataFromDB();
     }
 
 	// variables
+	private Application app;
 	
 	// methods
 	@Override
@@ -108,6 +110,16 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
     	} finally {
     		dbService.closeConnection();
    	 	}
+	}
+	
+	public Account getAccount(String id) {
+		for (Account account : dataList) {
+        	if (account.getId().equals(id) ) {
+        		return account;
+        	}
+        }
+		
+		return null;
 	}
 
 }

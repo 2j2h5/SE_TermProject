@@ -17,11 +17,13 @@ import java.time.LocalDateTime;
 public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueService {
 	
 	// constructor
-	public IssueServiceImpl() {
+	public IssueServiceImpl(Application app) {
+		this.app = app;
 		this.loadDataFromDB();
     }
 	
 	// variables
+	private Application app;
 	
 	// methods
 	@Override
@@ -53,18 +55,62 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	}
 	
 	@Override
-	public void requestBrowse() {
+	public List<Issue> requestBrowse(String key, String value) {
+		List<Issue> matchingIssues = new ArrayList<>();
+		for (Issue issue : dataList) {
+        	switch (key) {
+        		case "id":
+        			if (issue.getId() == Integer.parseInt(value)) matchingIssues.add(issue);
+        			break;
+        		case "title":
+        			if (issue.getTitle().equals(value)) matchingIssues.add(issue);
+        			break;
+        		case "involvedProject":
+        			if (issue.getProject() == Integer.parseInt(value)) matchingIssues.add(issue);
+        			break;
+        		case "reporter":
+        			if (issue.getReporter().equals(value)) matchingIssues.add(issue);
+        			break;
+        		case "assignee":
+        			if (issue.getAssignee().equals(value)) matchingIssues.add(issue);
+        			break;
+    			default:
+    				throw new IllegalArgumentException("Invalid key: " + key);
+        	}
+        }
 		
+		return matchingIssues;
 	}
 	
 	@Override
-	public void requestEdit() {
-		
-	}
-	
-	@Override
-	public void requestAssign() {
-		
+	public void requestEdit(int id) throws ValidationException {
+		if (this.checkValidation()) {
+			String title = (String) attributeDict.get("title");
+	        String description = (String) attributeDict.get("description");
+	        String priority = (String) attributeDict.get("priority");
+	        String state = (String) attributeDict.get("state");
+	        String assignee = (String) attributeDict.get("assignee");
+	        String fixer = null;
+	        
+	        if (assignee != null && state == "new") {
+	        	state = "assigned";
+	        }
+	        
+	        if (state == "fixed") {
+	        	fixer = currentId;
+	        }
+	        
+	        Issue issue = app.getIssueService().getIssueById(id);
+	        if (!issue.getTitle().equals(title)) issue.setTitle(title);
+	        if (!issue.getDescription().equals(description)) issue.setDescription(description);
+	        if (!issue.getPriority().equals(priority)) issue.setPriority(priority);
+	        if (!issue.getState().equals(state)) issue.setState(state);
+	        if ((issue.getAssignee() == null && assignee != null) || (issue.getAssignee() != null && !issue.getAssignee().equals(assignee))) issue.setAssignee(assignee);
+	        if ((issue.getFixer() == null && fixer != null) || (issue.getFixer() != null && !issue.getFixer().equals(fixer))) issue.setFixer(fixer);
+	        
+		} else {
+			throw new ValidationException("Validation failed");
+		}
 	}
 	
 	@Override
@@ -159,6 +205,16 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
     		dbService.closeConnection();
 		}
 		
+	}
+	
+	public Issue getIssueById(int id) {
+		for (Issue issue : dataList) {
+        	if (issue.getId() == id) {
+        		return issue;
+        	}
+        }
+		
+		return null;
 	}
 
 }

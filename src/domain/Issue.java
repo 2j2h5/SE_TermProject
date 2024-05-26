@@ -75,6 +75,18 @@ public class Issue {
 		return assignee;
 	}
 	
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	public void setPriority(String priority) {
+		this.priority = priority;
+	}
+	
 	public void setReporter(String reporterId) {
 		this.reporter = reporterId;
 	}

@@ -16,11 +16,13 @@ import java.sql.SQLException;
 public class ProjectServiceImpl extends BaseServiceImpl<Project> implements ProjectService {
 	
 	// constructor
-	public ProjectServiceImpl() {
+	public ProjectServiceImpl(Application app) {
+		this.app = app;
 		this.loadDataFromDB();
     }
 
 	// variables
+	private Application app;
 	
 	
 	// methods
@@ -52,7 +54,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
 	
 	@Override
 	public void notifyToPL() {
-		
+		//JavaMail API 사용해서 해당 PL에게 메일 보내기
 	}
 
 	@Override
@@ -114,6 +116,16 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
     	} finally {
     		dbService.closeConnection();
     	}
+	}
+	
+	public Project getProjectById(int id) {
+		for (Project project : dataList) {
+        	if (project.getId() == id) {
+        		return project;
+        	}
+        }
+		
+		return null;
 	}
 
 }

@@ -1,25 +1,20 @@
 package application;
 
-import domain.AccountService;
-import domain.CommentService;
-import domain.IssueService;
-import domain.ProjectService;
-
 public class Application {
 	
 	// constructor
 	public Application() {
-		accountService = new AccountServiceImpl();
-		projectService = new ProjectServiceImpl();
-		issueService = new IssueServiceImpl();
-		commentService = new CommentServiceImpl();
+		this.accountService = new AccountServiceImpl(this);
+		this.projectService = new ProjectServiceImpl(this);
+		this.issueService = new IssueServiceImpl(this);
+		this.commentService = new CommentServiceImpl(this);
 	}
 	
 	// variables
-	private AccountService accountService;
-	private ProjectService projectService;
-	private IssueService issueService;
-	private CommentService commentService;
+	private AccountServiceImpl accountService;
+	private ProjectServiceImpl projectService;
+	private IssueServiceImpl issueService;
+	private CommentServiceImpl commentService;
 	
 	// methods
 	public void init() {
@@ -34,6 +29,22 @@ public class Application {
 		projectService.saveDB();
 		issueService.saveDB();
 		commentService.saveDB();
+	}
+	
+	public AccountServiceImpl getAccountService() {
+		return accountService;
+	}
+	
+	public ProjectServiceImpl getProjectService() {
+		return projectService;
+	}
+	
+	public IssueServiceImpl getIssueService() {
+		return issueService;
+	}
+	
+	public CommentServiceImpl getCommentService() {
+		return commentService;
 	}
 	
 }
