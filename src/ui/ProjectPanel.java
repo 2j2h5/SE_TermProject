@@ -44,62 +44,30 @@ public class ProjectPanel extends JPanel {
 	private Project project;
 	private final int HEIGHT = 50;
 	private final int LENGTH = 750;
-	private final int ID_LENGTH = 100;
-	private final int NAME_LENGTH = 100;
-	private final int RESPONSIBLEPL_LENGTH = 100;
-	private final LineBorder LINE_BORDER = new LineBorder(Color.gray);
+	private final int LABEL_LENGTH = 100;
+	private final LineBorder DEFAULT_BORDER = new LineBorder(Color.gray);
 	
 	// methods
 	private void initialize() {
-		JLabel lblId = new JLabel(String.valueOf(project.getId()));
-		JLabel lblName = new JLabel(project.getName());
-		JLabel lblResponsiblePL = new JLabel(project.getResponsiblePL());
-		
-		lblId.setVerticalAlignment(SwingConstants.CENTER);
-		lblName.setVerticalAlignment(SwingConstants.CENTER);
-		lblResponsiblePL.setVerticalAlignment(SwingConstants.CENTER);
-		
-		lblId.setHorizontalAlignment(SwingConstants.CENTER);
-		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblResponsiblePL.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		lblId.setPreferredSize(new Dimension(ID_LENGTH, HEIGHT));
-		lblName.setPreferredSize(new Dimension(NAME_LENGTH, HEIGHT));
-		lblResponsiblePL.setPreferredSize(new Dimension(RESPONSIBLEPL_LENGTH, HEIGHT));
-		
-		lblId.setBorder(LINE_BORDER);
-		lblName.setBorder(LINE_BORDER);
-		lblResponsiblePL.setBorder(LINE_BORDER);
-		
-		add(lblId);
-		add(lblName);
-		add(lblResponsiblePL);
+		add(createLabel(String.valueOf(project.getId())));
+		add(createLabel(project.getName()));
+		add(createLabel(project.getResponsiblePL()));
 	}
 	
 	private void initializeCategory() {
-		JLabel lblId = new JLabel("ID");
-		JLabel lblName = new JLabel("NAME");
-		JLabel lblResponsiblePL = new JLabel("RESPONSIBLE PL");
+		add(createLabel("ID"));
+		add(createLabel("Name"));
+		add(createLabel("RESPONSIBLE PL"));
+	}
+	
+	private JLabel createLabel(String value) {
+		JLabel label = new JLabel(value);
+		label.setVerticalAlignment(SwingConstants.CENTER);
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+		label.setPreferredSize(new Dimension(LABEL_LENGTH, HEIGHT));
+		label.setBorder(DEFAULT_BORDER);
 		
-		lblId.setVerticalAlignment(SwingConstants.CENTER);
-		lblName.setVerticalAlignment(SwingConstants.CENTER);
-		lblResponsiblePL.setVerticalAlignment(SwingConstants.CENTER);
-		
-		lblId.setHorizontalAlignment(SwingConstants.CENTER);
-		lblName.setHorizontalAlignment(SwingConstants.CENTER);
-		lblResponsiblePL.setHorizontalAlignment(SwingConstants.CENTER);
-		
-		lblId.setPreferredSize(new Dimension(ID_LENGTH, HEIGHT));
-		lblName.setPreferredSize(new Dimension(NAME_LENGTH, HEIGHT));
-		lblResponsiblePL.setPreferredSize(new Dimension(RESPONSIBLEPL_LENGTH, HEIGHT));
-		
-		lblId.setBorder(LINE_BORDER);
-		lblName.setBorder(LINE_BORDER);
-		lblResponsiblePL.setBorder(LINE_BORDER);
-		
-		add(lblId);
-		add(lblName);
-		add(lblResponsiblePL);
+		return label;
 	}
 
 }

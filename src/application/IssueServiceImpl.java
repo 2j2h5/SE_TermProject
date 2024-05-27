@@ -145,7 +145,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
        	 		String reportedDate = resultSet.getString("reportedDate");
        	 		String state = resultSet.getString("state");
        	 		String fixer = resultSet.getString("fixer");
-       	 		String assignee = resultSet.getString("assginee");
+       	 		String assignee = resultSet.getString("assignee");
        	 		
         		Issue issue = new Issue(title, description, priority, involvedProject, reporter, reportedDate, state);
         		issue.setReporter(reporter);
