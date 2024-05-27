@@ -12,7 +12,6 @@ public class Project {
 		this.name = name;
 		this.description = description;
 		this.responsiblePL = responsiblePL;
-		System.out.println(count);
 	}
 	
 	// variables
