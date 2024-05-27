@@ -18,7 +18,6 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 	// constructor
 	public AccountServiceImpl(Application app) {
 		this.app = app;
-		this.loadDataFromDB();
     }
 
 	// variables

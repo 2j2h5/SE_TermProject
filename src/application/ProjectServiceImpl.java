@@ -18,7 +18,6 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
 	// constructor
 	public ProjectServiceImpl(Application app) {
 		this.app = app;
-		this.loadDataFromDB();
     }
 
 	// variables
@@ -103,6 +102,7 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
 
     		PreparedStatement checkStatement = conn.prepareStatement(checkSql);
     		PreparedStatement insertStatement = conn.prepareStatement(insertSql);
+    		
     		for (Project project : dataList) {
     			checkStatement.setInt(1, project.getId());
     			ResultSet rs = checkStatement.executeQuery();
@@ -138,6 +138,10 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
         }
 		
 		return null;
+	}
+	
+	public List<Project> getAllProjects() {
+		return dataList;
 	}
 
 }

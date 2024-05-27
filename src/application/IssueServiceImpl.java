@@ -19,7 +19,6 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	// constructor
 	public IssueServiceImpl(Application app) {
 		this.app = app;
-		this.loadDataFromDB();
     }
 	
 	// variables
@@ -44,7 +43,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	        String description = (String) attributeDict.get("description");
 	        String priority = (String) attributeDict.get("priority");
 	        int involvedProject = (int) attributeDict.get("involvedProject");
-	        String reporter = currentId;
+	        String reporter = app.getLoggedInUser();
 	        String reportedDate = LocalDateTime.now().format(dateFormatter);
 	        String state = "new";
 	        
@@ -97,7 +96,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	        }
 	        
 	        if (state == "fixed") {
-	        	fixer = currentId;
+	        	fixer = app.getLoggedInUser();
 	        }
 	        
 	        Issue issue = app.getIssueService().getIssueById(id);
@@ -223,6 +222,10 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
         }
 		
 		return null;
+	}
+
+	public List<Issue> getAllIssues() {
+		return dataList;
 	}
 
 }

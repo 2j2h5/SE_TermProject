@@ -12,7 +12,7 @@ public abstract class BaseServiceImpl<T> implements BaseService {
 	//variables
 	protected Map<String, Object> attributeDict = new HashMap<>();
 	protected List<T> dataList;
-	protected String currentId;
+	
 	private final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
 	protected DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(DATE_FORMAT);
 	
@@ -40,13 +40,5 @@ public abstract class BaseServiceImpl<T> implements BaseService {
 	protected abstract List<T> loadDataFromDB();
 	
 	protected abstract void saveDataToDB();
-	
-	protected void login(String id) {
-		this.currentId = id;
-	}
-	
-	protected void logout() {
-		this.currentId = null;
-	}
 
 }

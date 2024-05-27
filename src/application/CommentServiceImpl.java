@@ -19,7 +19,6 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 	// constructor
 	public CommentServiceImpl(Application app) {
 		this.app = app;
-		this.loadDataFromDB();
 	}
 	
 	// variables
@@ -42,7 +41,7 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 	public void requestMake() throws ValidationException {
 		if (this.checkValidation()) {
 			String content = (String) attributeDict.get("content");
-	        String writer = currentId;
+	        String writer = app.getLoggedInUser();
 	        String writedDate = LocalDateTime.now().format(dateFormatter);
 	        int involvedIssue = (int) attributeDict.get("involvedIssue");
 	        
