@@ -1,5 +1,7 @@
 package domain;
 
+import java.util.Objects;
+
 public class Issue {
 	
 	// constructor
@@ -15,10 +17,11 @@ public class Issue {
 		this.involvedProject = involvedProject;
 		this.reporter = reporter;
 		this.reportedDate = reportedDate;
+		this.state = state;
 	}
 	
 	// variables
-	private int count = 0;
+	private static int count = 0;
 	private int id;
 	private String title;
 	private String description;
@@ -105,5 +108,18 @@ public class Issue {
 	
 	public void setAssignee(String assigneeId) {
 		this.assignee = assigneeId;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+		Issue issue = (Issue) o;
+		return id == issue.id;
+	}
+	
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
 	}
 }

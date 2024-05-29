@@ -25,18 +25,11 @@ public class ProjectPanel extends JPanel {
 	
 	public ProjectPanel(Project project) {
 		this.project = project;
-		setLayout(new GridLayout(1, 0, 0, 10));
-		setPreferredSize(new Dimension(LENGTH, HEIGHT));
-		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
-		setBorder(border);
+		
 		initialize();
 	}
 	
 	public ProjectPanel(String category) {
-		setLayout(new GridLayout(1, 0, 0, 10));
-		setPreferredSize(new Dimension(LENGTH, HEIGHT));
-		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
-		setBorder(border);
 		initializeCategory();
 	}
 	
@@ -49,14 +42,24 @@ public class ProjectPanel extends JPanel {
 	
 	// methods
 	private void initialize() {
+		setLayout(new GridLayout(1, 0, 0, 10));
+		setPreferredSize(new Dimension(LENGTH, HEIGHT));
+		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
+		setBorder(border);
+		
 		add(createLabel(String.valueOf(project.getId())));
 		add(createLabel(project.getName()));
 		add(createLabel(project.getResponsiblePL()));
 	}
 	
 	private void initializeCategory() {
+		setLayout(new GridLayout(1, 0, 0, 10));
+		setPreferredSize(new Dimension(LENGTH, HEIGHT));
+		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
+		setBorder(border);
+		
 		add(createLabel("ID"));
-		add(createLabel("Name"));
+		add(createLabel("NAME"));
 		add(createLabel("RESPONSIBLE PL"));
 	}
 	

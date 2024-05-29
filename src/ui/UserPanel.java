@@ -28,7 +28,7 @@ public class UserPanel extends JPanel {
 	
 	// variables
 	private Application app;
-	 private JTextField txtId;
+	private JTextField txtId;
     private JPasswordField txtPassword;
     private JButton btnLogin;
     private JLabel lblLoggedInUser;

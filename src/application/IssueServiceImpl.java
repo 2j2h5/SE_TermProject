@@ -54,31 +54,43 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	}
 	
 	@Override
-	public List<Issue> requestBrowse(String key, String value) {
-		List<Issue> matchingIssues = new ArrayList<>();
-		for (Issue issue : dataList) {
-        	switch (key) {
-        		case "id":
-        			if (issue.getId() == Integer.parseInt(value)) matchingIssues.add(issue);
-        			break;
-        		case "title":
-        			if (issue.getTitle().equals(value)) matchingIssues.add(issue);
-        			break;
-        		case "involvedProject":
-        			if (issue.getProject() == Integer.parseInt(value)) matchingIssues.add(issue);
-        			break;
-        		case "reporter":
-        			if (issue.getReporter().equals(value)) matchingIssues.add(issue);
-        			break;
-        		case "assignee":
-        			if (issue.getAssignee().equals(value)) matchingIssues.add(issue);
-        			break;
-    			default:
-    				throw new IllegalArgumentException("Invalid key: " + key);
-        	}
-        }
+	public List<Issue> requestBrowse() {
+		try {
+			List<Issue> matchingIssues = new ArrayList<>();
+			int id = (int) attributeDict.get("id");
+			String title = (String) attributeDict.get("title");
+	        String priority = (String) attributeDict.get("priority");
+	        int involvedProject = (int) attributeDict.get("involvedProject");
+	        String state = (String) attributeDict.get("state");
+	        String assignee = (String) attributeDict.get("assignee");
+	        String reporter = (String) attributeDict.get("reporter");
+	        String fixer = (String) attributeDict.get("fixer");
+	        
+	        for (Issue issue : dataList) {
+	        	if (id == 0 || issue.getId() == id) {
+	        		if (title == null || (issue.getTitle() != null && issue.getTitle().equals(title))) {
+	        			if (priority == null || (issue.getPriority() != null && issue.getPriority().equals(priority))) {
+	        				if (involvedProject == 0 || issue.getProject() == involvedProject) {
+	                			if (state == null || (issue.getState() != null && issue.getState().equals(state))) {
+	                				if (assignee == null || (issue.getAssignee() != null && issue.getAssignee().equals(assignee))) {
+	                					if (reporter == null || (issue.getReporter() != null && issue.getReporter().equals(reporter))) {
+	                						if (fixer == null || (issue.getFixer() != null && issue.getFixer().equals(fixer))) {
+	                            				matchingIssues.add(issue);
+	                            			}
+	                        			}
+	                    			}
+	                			}
+	                		}
+	            		}
+	        		}
+	        	}
+	        }
 		
-		return matchingIssues;
+	        return matchingIssues;
+		} catch (ClassCastException | NullPointerException | NumberFormatException e) {
+			e.printStackTrace();
+			return new ArrayList<>();
+		}
 	}
 	
 	@Override

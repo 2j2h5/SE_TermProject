@@ -41,5 +41,9 @@ public class Project {
 	public String getResponsiblePL() {
 		return responsiblePL;
 	}
+	
+	public String toString() {
+		return String.format("%d. %s", id, name);
+	}
 
 }

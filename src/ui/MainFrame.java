@@ -1,6 +1,8 @@
 package ui;
 
 import java.awt.BorderLayout;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
@@ -20,24 +22,31 @@ public class MainFrame extends JFrame{
 	
 	// variables
 	private Application app;
-	private NavPanel nav;
+	private HeaderPanel header;
 	private BodyPanel body;
 	
 	// methods
 	public void display() {
-		nav = new NavPanel(app);
 		body = new BodyPanel(app);
+		header = new HeaderPanel(app, body);
 		
 		setLayout(new BorderLayout());
-		add(nav, BorderLayout.NORTH);
+		add(header, BorderLayout.NORTH);
 		
 		JScrollPane jspScrolledSection= new JScrollPane(body);
 		add(jspScrolledSection, BorderLayout.CENTER);
 		
 		pack();
-		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setSize(800, 600);
+		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.setSize(1200, 720);
 		this.setVisible(true);
+		
+		this.addWindowListener(new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent e) {
+				app.shutdown();
+				System.exit(0);
+			}
+		});
 	}
-
 }

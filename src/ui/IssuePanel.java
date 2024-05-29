@@ -24,18 +24,11 @@ public class IssuePanel extends JPanel {
 	
 	public IssuePanel(Issue issue) {
 		this.issue = issue;
-		setLayout(new GridLayout(1, 0, 0, 10));
-		setPreferredSize(new Dimension(LENGTH, HEIGHT));
-		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
-		setBorder(border);
+		
 		initialize();
 	}
 	
-	public IssuePanel(String category) {
-		setLayout(new GridLayout(1, 0, 0, 10));
-		setPreferredSize(new Dimension(LENGTH, HEIGHT));
-		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
-		setBorder(border);
+	public IssuePanel(String category) {		
 		initializeCategory();
 	}
 	
@@ -48,6 +41,11 @@ public class IssuePanel extends JPanel {
 	
 	// methods
 	private void initialize() {
+		setLayout(new GridLayout(1, 0, 0, 10));
+		setPreferredSize(new Dimension(LENGTH, HEIGHT));
+		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
+		setBorder(border);
+		
 		add(createLabel(String.valueOf(issue.getId())));
 		add(createLabel(issue.getTitle()));
 		add(createLabel(issue.getPriority()));
@@ -56,6 +54,11 @@ public class IssuePanel extends JPanel {
 	}
 	
 	private void initializeCategory() {
+		setLayout(new GridLayout(1, 0, 0, 10));
+		setPreferredSize(new Dimension(LENGTH, HEIGHT));
+		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
+		setBorder(border);
+		
 		add(createLabel("ID"));
 		add(createLabel("TITLE"));
 		add(createLabel("PRIORITY"));
