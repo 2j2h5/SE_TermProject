@@ -128,9 +128,12 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
         	if (account.getId().equals(id) ) {
         		return account;
         	}
-        }
-		
+        }	
 		return null;
+	}
+	
+	public List<Account> getAllAccount() {
+		return dataList;
 	}
 
 }

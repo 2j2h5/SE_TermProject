@@ -187,35 +187,30 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
     	Connection conn = dbService.getConnection();
 
     	try {
-    		String checkSql = "SELECT COUNT(*) FROM issues WHERE id = ?";
+    		String deleteSql = "DELETE FROM issues";
     		String insertSql = "INSERT INTO issues (id, title, description, priority, involvedProject, reporter, reportedDate, state, fixer, assignee) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    		PreparedStatement checkStatement = conn.prepareStatement(checkSql);
+    		PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
     		PreparedStatement insertStatement = conn.prepareStatement(insertSql);
+    		
+    		deleteStatement.executeUpdate();
+    		
     		for (Issue issue : dataList) {
-    			checkStatement.setInt(1, issue.getId());
-    			ResultSet rs = checkStatement.executeQuery();
-    			rs.next();
-    			int count = rs.getInt(1);
-    			rs.close();
-    			
-    			if (count == 0) {
-	    			insertStatement.setInt(1, issue.getId());
-	        		insertStatement.setString(2, issue.getTitle());
-	        		insertStatement.setString(3, issue.getDescription());
-	        		insertStatement.setString(4, issue.getPriority());
-	        		insertStatement.setInt(5, issue.getProject());
-	        		insertStatement.setString(6, issue.getReporter());
-	        		insertStatement.setString(7, issue.getReportedDate());
-	        		insertStatement.setString(8, issue.getState());
-	        		insertStatement.setString(9, issue.getFixer());
-	        		insertStatement.setString(10, issue.getAssignee());
-	        		
-	        		insertStatement.executeUpdate();
-    			}
+    			insertStatement.setInt(1, issue.getId());
+        		insertStatement.setString(2, issue.getTitle());
+        		insertStatement.setString(3, issue.getDescription());
+        		insertStatement.setString(4, issue.getPriority());
+        		insertStatement.setInt(5, issue.getProject());
+        		insertStatement.setString(6, issue.getReporter());
+        		insertStatement.setString(7, issue.getReportedDate());
+        		insertStatement.setString(8, issue.getState());
+        		insertStatement.setString(9, issue.getFixer());
+        		insertStatement.setString(10, issue.getAssignee());
+        		
+        		insertStatement.executeUpdate();
     		}
 
-    		checkStatement.close();
+    		deleteStatement.close();
     		insertStatement.close();
     		
 		} catch (SQLException e) {

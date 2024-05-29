@@ -24,6 +24,8 @@ public class MainFrame extends JFrame{
 	private Application app;
 	private HeaderPanel header;
 	private BodyPanel body;
+	private final int WIDTH = 1200;
+	private final int HEIGHT = 800;
 	
 	// methods
 	public void display() {
@@ -38,7 +40,7 @@ public class MainFrame extends JFrame{
 		
 		pack();
 		this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.setSize(1200, 720);
+		this.setSize(WIDTH, HEIGHT);
 		this.setVisible(true);
 		
 		this.addWindowListener(new WindowAdapter() {

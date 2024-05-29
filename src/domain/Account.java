@@ -24,4 +24,8 @@ public class Account {
 	public String getPassword() {
 		return password;
 	}
+	
+	public String toString() {
+		return id;
+	}
 }
