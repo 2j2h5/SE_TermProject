@@ -842,6 +842,7 @@ public class BodyPanel extends JPanel{
     	
     	JButton btnEdit = new JButton("Edit");
     	JButton btnComment = new JButton("Show Comments");
+    	JButton btnBack = new JButton("Back");
     	
     	btnEdit.addActionListener(new ActionListener() {
 			@Override
@@ -861,8 +862,20 @@ public class BodyPanel extends JPanel{
 			}
 		});
     	
+    	btnBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (Project project : projects) {
+					if (project.getId() == issue.getProject()) {
+						showIssues(project);
+					}
+				}
+			}
+		});
+    	
     	sixthRow.add(btnEdit);
     	sixthRow.add(btnComment);
+    	sixthRow.add(btnBack);
     	sixthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	detailsContainer.add(firstRow);
@@ -902,6 +915,7 @@ public class BodyPanel extends JPanel{
     	firstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	JButton btnAddComment = new JButton("Add Comment");
+    	JButton btnBack = new JButton("Back");
     	
     	btnAddComment.addActionListener(new ActionListener() {
 			@Override
@@ -925,7 +939,15 @@ public class BodyPanel extends JPanel{
 			}
 		});
     	
+    	btnBack.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+					showDetails(issue);
+			}
+		});
+    	
     	secondRow.add(btnAddComment);
+    	secondRow.add(btnBack);
     	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
         addCommentContainer.add(firstRow);
         addCommentContainer.add(secondRow);
