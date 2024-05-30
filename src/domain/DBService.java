@@ -3,7 +3,7 @@ package domain;
 import java.sql.*;
 
 public class DBService {
-    private static final String DB_URL = "jdbc:mysql://localhost/TERM_PROJECT?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC";
+    private static final String DB_URL = "jdbc:mysql://localhost/TERM_PROJECT";
     private static final String USER = "root";
     private static final String PASS = "1576";
 
