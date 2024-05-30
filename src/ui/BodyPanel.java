@@ -4,20 +4,29 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -158,18 +167,31 @@ public class BodyPanel extends JPanel{
         
         JPanel firstRow = new JPanel();
         JPanel secondRow = new JPanel();
+        JPanel thirdRow = new JPanel();
         firstRow.setLayout(new FlowLayout());
         secondRow.setLayout(new FlowLayout());
+        thirdRow.setLayout(new FlowLayout());
         
-        firstRow.add(lblProjectId);
-        firstRow.add(txtProjectId);
-        firstRow.add(lblProjectName);
-        firstRow.add(txtProjectName);
-        secondRow.add(lblProjectDescription);
-        secondRow.add(scrollDescription);
+        secondRow.add(lblProjectId);
+        secondRow.add(txtProjectId);
+        secondRow.add(lblProjectName);
+        secondRow.add(txtProjectName);
+        thirdRow.add(lblProjectDescription);
+        thirdRow.add(scrollDescription);
+        
+        JButton btnStatistics = new JButton("Statistics");
+        
+        btnStatistics.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showStatistics(project);
+			}
+		});
+        firstRow.add(btnStatistics);
         
         issueContainer.add(firstRow);
         issueContainer.add(secondRow);
+        issueContainer.add(thirdRow);
         issueContainer.add(new IssuePanel("category"));
         issueContainer.add(Box.createVerticalStrut(20));
         
@@ -1122,6 +1144,90 @@ public class BodyPanel extends JPanel{
     	revalidate();
         repaint();
 		
+	}
+	
+	private void showStatistics(Project project) {
+		List<Issue> issues = app.getIssueService().getAllIssues();
+	    Map<LocalDate, Integer> dailyIssueCount = new HashMap<>();
+	    Map<Month, Integer> monthlyIssueCount = new HashMap<>();
+
+	    for (Issue issue : issues) {
+	        if (project.getId() == issue.getProject()) {
+	        	String issueReportedDate = issue.getReportedDate();
+	        	LocalDateTime issueDateTime = LocalDateTime.parse(issueReportedDate, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+	            LocalDate issueDate = issueDateTime.toLocalDate();
+	            dailyIssueCount.put(issueDate, dailyIssueCount.getOrDefault(issueDate, 0) + 1);
+	            Month issueMonth = issueDate.getMonth();
+	            monthlyIssueCount.put(issueMonth, monthlyIssueCount.getOrDefault(issueMonth, 0) + 1);
+	        }
+	    }
+
+	    JFrame statsFrame = new JFrame("Issue Statistics");
+	    statsFrame.setLayout(new GridLayout(2, 1));
+	    statsFrame.add(new ChartPanel(dailyIssueCount, "Daily Issues", "Date", "Number of Issues"));
+	    statsFrame.add(new ChartPanel(monthlyIssueCount, "Monthly Issues", "Month", "Number of Issues"));
+	    statsFrame.pack();
+	    statsFrame.setSize(400, 600);
+	    statsFrame.setVisible(true);
+	}
+
+	class ChartPanel extends JPanel {
+	    private Map<?, Integer> data;
+	    private String title;
+	    private String xAxisLabel;
+	    private String yAxisLabel;
+
+	    public ChartPanel(Map<?, Integer> data, String title, String xAxisLabel, String yAxisLabel) {
+	        this.data = data;
+	        this.title = title;
+	        this.xAxisLabel = xAxisLabel;
+	        this.yAxisLabel = yAxisLabel;
+	    }
+
+	    @Override
+	    protected void paintComponent(Graphics g) {
+	        super.paintComponent(g);
+	        drawChart(g);
+	    }
+
+	    private void drawChart(Graphics g) {
+	        int width = getWidth();
+	        int height = getHeight();
+	        int padding = 25;
+	        int labelPadding = 25;
+
+	        int numValues = data.size();
+	        int maxValue = data.values().stream().max(Integer::compareTo).orElse(0);
+
+	        int xScale = (width - 2 * padding - labelPadding) / numValues;
+	        int yScale = (height - 2 * padding - labelPadding) / maxValue;
+
+	        g.setColor(Color.WHITE);
+	        g.fillRect(padding + labelPadding, padding, width - 2 * padding - labelPadding, height - 2 * padding - labelPadding);
+	        g.setColor(Color.BLACK);
+
+	        // Draw title
+	        FontMetrics metrics = g.getFontMetrics();
+	        int titleWidth = metrics.stringWidth(title);
+	        g.drawString(title, (width - titleWidth) / 2, padding - 5);
+
+	        // Draw labels
+	        int labelWidth = metrics.stringWidth(yAxisLabel);
+	        g.drawString(yAxisLabel, padding, (height + labelWidth) / 2);
+	        g.drawString(xAxisLabel, (width - metrics.stringWidth(xAxisLabel)) / 2, height - padding + labelPadding);
+
+	        int x = padding + labelPadding;
+	        for (Map.Entry<?, Integer> entry : data.entrySet()) {
+	            int barHeight = entry.getValue() * yScale;
+	            g.setColor(Color.BLUE);
+	            g.fillRect(x, height - padding - barHeight, xScale - 2, barHeight);
+	            g.setColor(Color.BLACK);
+	            String label = entry.getKey().toString();
+	            int labelX = x + (xScale - metrics.stringWidth(label)) / 2;
+	            g.drawString(label, labelX, height - padding + metrics.getHeight());
+	            x += xScale;
+	        }
+	    }
 	}
 
 }
