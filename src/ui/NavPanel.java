@@ -34,6 +34,7 @@ public class NavPanel extends JPanel {
 	private JButton btnAdvancedSearch;
 	private JButton btnReportIssue;
 	private JButton btnNewAccount;
+	private JButton btnNewProject;
 	
 	// methods
 	
@@ -46,6 +47,7 @@ public class NavPanel extends JPanel {
 		btnAdvancedSearch = new JButton("Advanced Search");
 		btnReportIssue = new JButton("Report Issue");
 		btnNewAccount = new JButton("New Account");
+		btnNewProject = new JButton("New Project");
 		
 		btnHome.addActionListener(new ActionListener() {
 			@Override
@@ -92,12 +94,20 @@ public class NavPanel extends JPanel {
 			}
 		});
 		
+		btnNewProject.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				body.showNewProject();
+			}
+		});
+		
 		this.add(btnHome);
 		this.add(txtSearch);
 		this.add(btnSearch);
 		this.add(btnAdvancedSearch);
 		this.add(btnReportIssue);
 		this.add(btnNewAccount);
+		this.add(btnNewProject);
 		
 		this.revalidate();
 		this.repaint();

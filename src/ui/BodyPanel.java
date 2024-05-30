@@ -995,4 +995,84 @@ public class BodyPanel extends JPanel{
 		return state;
 	}
 
+	public void showNewProject() {
+		removeAll();
+		
+		List<Account> accounts = app.getAccountService().getAllAccount();
+    	
+    	JPanel newProjectContainer = new JPanel();
+    	newProjectContainer.setLayout(new BoxLayout(newProjectContainer, BoxLayout.Y_AXIS));
+    	
+    	JPanel firstRow = new JPanel();
+    	JPanel secondRow = new JPanel();
+    	JPanel thirdRow = new JPanel();
+    	JPanel fourthRow = new JPanel();
+    	
+    	firstRow.setLayout(new FlowLayout());
+    	secondRow.setLayout(new FlowLayout());
+    	thirdRow.setLayout(new FlowLayout());
+    	fourthRow.setLayout(new FlowLayout());
+    	
+    	JLabel lblName = new JLabel("Name:");
+    	JLabel lblDescription = new JLabel("Description:");
+    	JLabel lblResponsiblePL = new JLabel("Responsible PL:");
+    	
+    	JTextField txtName = new JTextField(10);
+    	JTextArea txtDescription = new JTextArea(20, 40);
+    	JScrollPane scrollComment = new JScrollPane(txtDescription);
+    	JComboBox<Account> cbxResponsiblePL = new JComboBox<>();
+    	for (Account account : accounts) {
+    		cbxResponsiblePL.addItem(account);
+    	}
+    	
+    	firstRow.add(lblName);
+    	firstRow.add(txtName);
+    	firstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+    	
+    	secondRow.add(lblDescription);
+    	secondRow.add(scrollComment);
+    	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+    	
+    	thirdRow.add(lblResponsiblePL);
+    	thirdRow.add(cbxResponsiblePL);
+    	thirdRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+    	
+    	JButton btnNewProject = new JButton("New Project");
+    	
+    	btnNewProject.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String name = txtName.getText();
+				String description = new String(txtDescription.getText());
+				String responsiblePL = new String(((Account) cbxResponsiblePL.getSelectedItem()).getId());
+				
+				app.getProjectService().enterInfo("name", name);
+				app.getProjectService().enterInfo("description", description);
+				app.getProjectService().enterInfo("responsiblePL", responsiblePL);
+				
+				try {
+					app.getProjectService().requestMake();
+					showProjects();
+				} catch (ValidationException e1) {
+					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, "Invalid value");
+				}
+			}
+		});
+    	
+    	fourthRow.add(btnNewProject);
+    	fourthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+    	
+    	newProjectContainer.add(firstRow);
+    	newProjectContainer.add(secondRow);
+    	newProjectContainer.add(thirdRow);
+    	newProjectContainer.add(fourthRow);
+    	
+    	add(newProjectContainer);
+    	add(Box.createVerticalGlue());
+    	revalidate();
+        repaint();
+		
+	}
+
 }
