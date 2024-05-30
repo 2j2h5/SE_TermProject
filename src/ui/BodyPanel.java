@@ -2,6 +2,7 @@ package ui;
 
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -9,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -31,6 +33,7 @@ import domain.Project;
 import exceptions.ValidationException;
 import domain.Account;
 import domain.Issue;
+import domain.Comment;
 
 public class BodyPanel extends JPanel{
 	
@@ -786,7 +789,7 @@ public class BodyPanel extends JPanel{
     	
     	JTextField txtId = new JTextField(Integer.toString(issue.getId()), 2);
     	JTextField txtTitle = new JTextField(issue.getTitle(), 30);
-    	JTextArea txtDescription = new JTextArea(issue.getDescription(), 20, 40);
+    	JTextArea txtDescription = new JTextArea(issue.getDescription(), 0, 40);
     	JScrollPane scrollDescription = new JScrollPane(txtDescription);
     	JTextField txtInvolvedProject = new JTextField(Integer.toString(issue.getProject()), 2);
     	JTextField txtPriority = new JTextField(issue.getPriority(), 10);
@@ -838,6 +841,7 @@ public class BodyPanel extends JPanel{
     	fifthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	JButton btnEdit = new JButton("Edit");
+    	JButton btnComment = new JButton("Show Comments");
     	
     	btnEdit.addActionListener(new ActionListener() {
 			@Override
@@ -850,7 +854,15 @@ public class BodyPanel extends JPanel{
 			}
 		});
     	
+    	btnComment.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showComment(issue);
+			}
+		});
+    	
     	sixthRow.add(btnEdit);
+    	sixthRow.add(btnComment);
     	sixthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	detailsContainer.add(firstRow);
@@ -864,6 +876,119 @@ public class BodyPanel extends JPanel{
     	add(Box.createVerticalGlue());
     	revalidate();
         repaint();
+	}
+	
+	public void showComment(Issue issue) {
+		removeAll();
+        
+        JPanel addCommentContainer = new JPanel();
+        JPanel displayCommentContainer = new JPanel();
+        
+        addCommentContainer.setLayout(new BoxLayout(addCommentContainer, BoxLayout.Y_AXIS));
+        displayCommentContainer.setLayout(new BoxLayout(displayCommentContainer, BoxLayout.Y_AXIS));
+        
+        JPanel firstRow = new JPanel();
+    	JPanel secondRow = new JPanel();
+    	
+    	firstRow.setLayout(new FlowLayout());
+    	secondRow.setLayout(new FlowLayout());
+    	
+    	JLabel lblComment = new JLabel("Comment:");
+    	JTextArea txtComment = new JTextArea(10, 40);
+    	JScrollPane scrollComment = new JScrollPane(txtComment);
+    	
+    	firstRow.add(lblComment);
+    	firstRow.add(scrollComment);
+    	firstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+    	
+    	JButton btnAddComment = new JButton("Add Comment");
+    	
+    	btnAddComment.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String content = txtComment.getText();
+				
+				app.getCommentService().enterInfo("content", content);
+				app.getCommentService().enterInfo("involvedIssue", issue.getId());
+				
+				if (app.isLoggedIn()) {
+					try {
+						app.getCommentService().requestMake();
+						refreshComment(issue, displayCommentContainer);
+					} catch (ValidationException e1) {
+						e1.printStackTrace();
+						JOptionPane.showMessageDialog(null, "Invalid value");
+					}
+				} else {
+					JOptionPane.showMessageDialog(null, "You can comment after log in");
+				}
+			}
+		});
+    	
+    	secondRow.add(btnAddComment);
+    	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+        addCommentContainer.add(firstRow);
+        addCommentContainer.add(secondRow);
+        
+        add(addCommentContainer);
+        refreshComment(issue, displayCommentContainer);
+        add(displayCommentContainer);
+        add(Box.createVerticalGlue());
+        revalidate();
+        repaint();
+        
+        state = "comment";
+	}
+	
+	public void refreshComment(Issue issue, JPanel displayCommentContainer) {
+		displayCommentContainer.removeAll();
+		
+		List<Comment> copy = app.getCommentService().getAllComments();
+		List<Comment> comments = new ArrayList<Comment>(copy);
+		Collections.reverse(comments);
+		
+		for (Comment comment : comments) {
+			if (issue.getId() == comment.getIssue()) {
+				JPanel commentFirstRow = new JPanel();
+		    	JPanel commentSecondRow = new JPanel();
+		    	
+		    	commentFirstRow.setLayout(new FlowLayout());
+		    	commentSecondRow.setLayout(new FlowLayout());
+				
+		    	JLabel lblId = new JLabel("Id:");
+				JLabel lblWriter = new JLabel("Writer:");
+				JLabel lblWritedDate = new JLabel("Writed Date:");
+				JLabel lblComment = new JLabel("Comment:");
+				
+				JTextField txtId = new JTextField(Integer.toString(comment.getId()), 2);
+				JTextField txtWriter = new JTextField(comment.getWriter(), 10);
+				JTextField txtWritedDate = new JTextField(comment.getWritedDate(), 20);
+				JTextArea txtComment = new JTextArea(comment.getContent(), 0, 40);
+				JScrollPane scrollComment = new JScrollPane(txtComment);
+				
+				txtId.setEditable(false);
+				txtWriter.setEditable(false);
+				txtWritedDate.setEditable(false);
+				txtComment.setEditable(false);
+				
+				commentFirstRow.add(lblId);
+				commentFirstRow.add(txtId);
+				commentFirstRow.add(lblWriter);
+				commentFirstRow.add(txtWriter);
+				commentFirstRow.add(lblWritedDate);
+				commentFirstRow.add(txtWritedDate);
+				commentFirstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+				
+				commentSecondRow.add(lblComment);
+				commentSecondRow.add(scrollComment);
+				commentSecondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+				
+				displayCommentContainer.add(commentFirstRow);
+				displayCommentContainer.add(commentSecondRow);
+			}
+		}
+		displayCommentContainer.revalidate();
+        displayCommentContainer.repaint();
 	}
 	
 	public String getState() {

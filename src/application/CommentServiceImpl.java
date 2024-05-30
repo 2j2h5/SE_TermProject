@@ -92,19 +92,15 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
     	Connection conn = dbService.getConnection();
 
     	try {
-    		String checkSql = "SELECT COUNT(*) FROM comments WHERE id = ?";
-    		String insertSql = "INSERT INTO comments (id, content, writer, writedDate, involvedIssue) VALUES (?, ?, ?, ?)";
+    		String deleteSql = "DELETE FROM comments";
+    		String insertSql = "INSERT INTO comments (id, content, writer, writedDate, involvedIssue) VALUES (?, ?, ?, ?, ?)";
 
-    		PreparedStatement checkStatement = conn.prepareStatement(checkSql);
+    		PreparedStatement deleteStatement = conn.prepareStatement(deleteSql);
     		PreparedStatement insertStatement = conn.prepareStatement(insertSql);
+    		
+    		deleteStatement.executeUpdate();
+    		
     		for (Comment comment : dataList) {
-    			checkStatement.setInt(1, comment.getId());
-    			ResultSet rs = checkStatement.executeQuery();
-    			rs.next();
-    			int count = rs.getInt(1);
-    			rs.close();
-    			
-    			if (count == 0) {
 	    			insertStatement.setInt(1, comment.getId());
 	        		insertStatement.setString(2, comment.getContent());
 	        		insertStatement.setString(3, comment.getWriter());
@@ -112,10 +108,9 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 	        		insertStatement.setInt(5, comment.getIssue());
 	        		
 	        		insertStatement.executeUpdate();
-    			}
     		}
 
-    		checkStatement.close();
+    		deleteStatement.close();
     		insertStatement.close();
     		
     	} catch (SQLException e) {
@@ -124,6 +119,10 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
     		dbService.closeConnection();
    		}
 		
+	}
+	
+	public List<Comment> getAllComments(){
+		return dataList;
 	}
 
 }
