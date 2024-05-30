@@ -141,8 +141,35 @@ public class BodyPanel extends JPanel{
         List<Issue> issues = app.getIssueService().getAllIssues();
         
         JPanel issueContainer = new JPanel();
-        
         issueContainer.setLayout(new BoxLayout(issueContainer, BoxLayout.Y_AXIS));
+        
+        JLabel lblProjectId = new JLabel("Project Id:");
+        JLabel lblProjectName = new JLabel("Name:");
+        JLabel lblProjectDescription = new JLabel("Description:");
+        
+        JTextField txtProjectId = new JTextField(Integer.toString(project.getId()), 2);
+        JTextField txtProjectName = new JTextField(project.getName(), 10);
+        JTextArea txtProjectDescription = new JTextArea(project.getDescription(), 10, 40);
+        JScrollPane scrollDescription = new JScrollPane(txtProjectDescription);
+        
+        txtProjectId.setEditable(false);
+        txtProjectName.setEditable(false);
+        txtProjectDescription.setEditable(false);
+        
+        JPanel firstRow = new JPanel();
+        JPanel secondRow = new JPanel();
+        firstRow.setLayout(new FlowLayout());
+        secondRow.setLayout(new FlowLayout());
+        
+        firstRow.add(lblProjectId);
+        firstRow.add(txtProjectId);
+        firstRow.add(lblProjectName);
+        firstRow.add(txtProjectName);
+        secondRow.add(lblProjectDescription);
+        secondRow.add(scrollDescription);
+        
+        issueContainer.add(firstRow);
+        issueContainer.add(secondRow);
         issueContainer.add(new IssuePanel("category"));
         issueContainer.add(Box.createVerticalStrut(20));
         
