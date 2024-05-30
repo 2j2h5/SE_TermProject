@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JLabel;
@@ -37,27 +39,28 @@ public class IssuePanel extends JPanel {
 	private final int HEIGHT = 50;
 	private final int LENGTH = 750;
 	private final int LABEL_LENGTH = 100;
-	private final LineBorder DEFAULT_BORDER = new LineBorder(Color.gray);
+	private final LineBorder DEFAULT_BORDER = new LineBorder(Color.BLACK);
+	private final LineBorder HOVER_BORDER = new LineBorder(Color.RED, 3);
 	
 	// methods
 	private void initialize() {
 		setLayout(new GridLayout(1, 0, 0, 10));
 		setPreferredSize(new Dimension(LENGTH, HEIGHT));
-		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
-		setBorder(border);
+		setBorder(DEFAULT_BORDER);
 		
 		add(createLabel(String.valueOf(issue.getId())));
 		add(createLabel(issue.getTitle()));
 		add(createLabel(issue.getPriority()));
 		add(createLabel(issue.getReporter()));
 		add(createLabel(issue.getState()));
+		
+		addMouseListener(new HoverMouseListener());
 	}
 	
 	private void initializeCategory() {
 		setLayout(new GridLayout(1, 0, 0, 10));
 		setPreferredSize(new Dimension(LENGTH, HEIGHT));
-		Border border = BorderFactory.createLineBorder(java.awt.Color.BLACK);
-		setBorder(border);
+		setBorder(DEFAULT_BORDER);
 		
 		add(createLabel("ID"));
 		add(createLabel("TITLE"));
@@ -71,9 +74,20 @@ public class IssuePanel extends JPanel {
 		label.setVerticalAlignment(SwingConstants.CENTER);
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		label.setPreferredSize(new Dimension(LABEL_LENGTH, HEIGHT));
-		label.setBorder(DEFAULT_BORDER);
+		label.setBorder(new LineBorder(Color.gray));
 		
 		return label;
+	}
+	
+	private class HoverMouseListener extends MouseAdapter {
+		@Override
+		public void mouseEntered(MouseEvent e) {
+			setBorder(HOVER_BORDER);
+		}
+		@Override
+		public void mouseExited(MouseEvent e) {
+			setBorder(DEFAULT_BORDER);
+		}
 	}
 
 }

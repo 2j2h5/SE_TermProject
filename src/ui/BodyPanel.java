@@ -48,6 +48,7 @@ public class BodyPanel extends JPanel{
 	// variables
 	private Application app;
 	private String state;
+	private final int VERTICAL_STRUT = 50;
 	
 	// methods
 	private void initialize() {
@@ -284,13 +285,13 @@ public class BodyPanel extends JPanel{
     	firstRow.add(txtId);
     	firstRow.add(lblTitle);
     	firstRow.add(txtTitle);
-    	firstRow.add(Box.createVerticalStrut(100));
+    	firstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	secondRow.add(lblPriority);
     	secondRow.add(txtPriority);
     	secondRow.add(lblState);
     	secondRow.add(txtState);
-    	secondRow.add(Box.createVerticalStrut(100));
+    	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	thirdRow.add(lblAssignee);
     	thirdRow.add(txtAssignee);
@@ -298,7 +299,7 @@ public class BodyPanel extends JPanel{
     	thirdRow.add(txtReporter);
     	thirdRow.add(lblFixer);
     	thirdRow.add(txtFixer);
-    	thirdRow.add(Box.createVerticalStrut(100));
+    	thirdRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	JButton btnSearch = new JButton("Search");
     	
@@ -374,7 +375,7 @@ public class BodyPanel extends JPanel{
 		});
     	
     	fourthRow.add(btnSearch);
-    	fourthRow.add(Box.createVerticalStrut(100));
+    	fourthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	searchContainer.add(firstRow);
     	searchContainer.add(secondRow);
@@ -427,17 +428,17 @@ public class BodyPanel extends JPanel{
     	
     	firstRow.add(lblTitle);
     	firstRow.add(txtTitle);
-    	firstRow.add(Box.createVerticalStrut(100));
+    	firstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	secondRow.add(lblDescription);
     	secondRow.add(scrollDescription);
-    	secondRow.add(Box.createVerticalStrut(100));
+    	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	thirdRow.add(lblInvolvedProject);
     	thirdRow.add(cbxInvolvedProject);
     	thirdRow.add(lblPriority);
     	thirdRow.add(cbxPriority);
-    	thirdRow.add(Box.createVerticalStrut(100));
+    	thirdRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	JButton btnReport = new JButton("Report");
     	
@@ -491,7 +492,7 @@ public class BodyPanel extends JPanel{
 		});
     	
     	fourthRow.add(btnReport);
-    	fourthRow.add(Box.createVerticalStrut(100));
+    	fourthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	reportContainer.add(firstRow);
     	reportContainer.add(secondRow);
@@ -547,13 +548,19 @@ public class BodyPanel extends JPanel{
     	JComboBox cbxPriority = new JComboBox(priorities);
     	cbxPriority.setSelectedItem(issue.getProject());
     	String[] states = {"assigned", "fixed", "resolved", "closed", "reopended"};
-    	JLabel lblStateText = new JLabel(issue.getState());
-    	JComboBox cbxState = new JComboBox(states);
-    	if (issue.getState() != "new") {
-    		cbxState.setSelectedItem(issue.getState());
+    	String[] newState = {"new"};
+    	JComboBox cbxState;
+    	if (issue.getState().equals("new")) {
+    		cbxState = new JComboBox(newState);
+    		cbxState.setEnabled(false);
+    	} else {
+    		cbxState = new JComboBox(states);
     	}
+    	cbxState.setSelectedItem(issue.getState());
     	JComboBox<Account> cbxAssignee = new JComboBox<>();
-    	cbxAssignee.addItem(null);
+    	if (issue.getAssignee() == null) {
+    		cbxAssignee.addItem(null);
+    	}
     	for (Account account : accounts) {
     		cbxAssignee.addItem(account);
     		if (account.getId().equals(issue.getAssignee())) {
@@ -564,27 +571,23 @@ public class BodyPanel extends JPanel{
     	
     	firstRow.add(lblTitle);
     	firstRow.add(txtTitle);
-    	firstRow.add(Box.createVerticalStrut(100));
+    	firstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	secondRow.add(lblDescription);
     	secondRow.add(scrollDescription);
-    	secondRow.add(Box.createVerticalStrut(100));
+    	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	thirdRow.add(lblInvolvedProject);
     	thirdRow.add(cbxInvolvedProject);
     	thirdRow.add(lblPriority);
     	thirdRow.add(cbxPriority);
-    	thirdRow.add(Box.createVerticalStrut(100));
+    	thirdRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	fourthRow.add(lblState);
-    	if (issue.getState().equals("new")) {
-    		fourthRow.add(lblStateText);
-    	} else {
-    		fourthRow.add(cbxState);
-    	}
+		fourthRow.add(cbxState);
     	fourthRow.add(lblAssignee);
     	fourthRow.add(cbxAssignee);
-    	thirdRow.add(Box.createVerticalStrut(100));
+    	thirdRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	JButton btnEdit = new JButton("Edit");
     	
@@ -661,7 +664,7 @@ public class BodyPanel extends JPanel{
 		});
     	
     	fifthRow.add(btnEdit);
-    	fifthRow.add(Box.createVerticalStrut(100));
+    	fifthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	reportContainer.add(firstRow);
     	reportContainer.add(secondRow);
@@ -700,13 +703,13 @@ public class BodyPanel extends JPanel{
     	
     	firstRow.add(lblId);
     	firstRow.add(txtId);
-    	firstRow.add(Box.createVerticalStrut(100));
+    	firstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	secondRow.add(lblPassword);
     	secondRow.add(txtPassword);
     	secondRow.add(lblPasswordConfirm);
     	secondRow.add(txtPasswordConfirm);
-    	secondRow.add(Box.createVerticalStrut(100));
+    	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	JButton btnNewAccount = new JButton("New Account");
     	
@@ -734,12 +737,11 @@ public class BodyPanel extends JPanel{
 		});
     	
     	thirdRow.add(btnNewAccount);
-    	thirdRow.add(Box.createVerticalStrut(100));
+    	thirdRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	newAccountContainer.add(firstRow);
     	newAccountContainer.add(secondRow);
     	newAccountContainer.add(thirdRow);
-    	//newAccountContainer.add(btnNewAccount);
     	
     	add(newAccountContainer);
     	add(Box.createVerticalGlue());
@@ -751,6 +753,7 @@ public class BodyPanel extends JPanel{
 		removeAll();
 		
 		List<Project> projects = app.getProjectService().getAllProjects();
+		List<Account> accounts = app.getAccountService().getAllAccount();
     	
     	JPanel detailsContainer = new JPanel();
     	
@@ -761,12 +764,14 @@ public class BodyPanel extends JPanel{
     	JPanel thirdRow = new JPanel();
     	JPanel fourthRow = new JPanel();
     	JPanel fifthRow = new JPanel();
+    	JPanel sixthRow = new JPanel();
     	
     	firstRow.setLayout(new FlowLayout());
     	secondRow.setLayout(new FlowLayout());
     	thirdRow.setLayout(new FlowLayout());
     	fourthRow.setLayout(new FlowLayout());
     	fifthRow.setLayout(new FlowLayout());
+    	sixthRow.setLayout(new FlowLayout());
     	
     	JLabel lblId = new JLabel("Id:");
     	JLabel lblTitle = new JLabel("Title:");
@@ -779,51 +784,58 @@ public class BodyPanel extends JPanel{
     	JLabel lblAssignee = new JLabel("Assignee:");
     	JLabel lblFixer = new JLabel("Fixer:");
     	
-    	JLabel lblIdText = new JLabel(Integer.toString(issue.getId()));
-    	JLabel lblTitleText = new JLabel(issue.getTitle());
-    	JLabel lblDescriptionText = new JLabel(issue.getDescription());
-    	JLabel lblInvolvedProjectText = new JLabel();
-    	for (Project project : projects) {
-    		if (project.getId() == issue.getProject()) {
-    			lblInvolvedProjectText = new JLabel(Integer.toString(issue.getProject()));
-    		}
-    	}
-    	JLabel lblPriorityText = new JLabel(issue.getPriority());
-    	JLabel lblReporterText = new JLabel(issue.getReporter());
-    	JLabel lblReportedDateText = new JLabel(issue.getReportedDate());
-    	JLabel lblStateText = new JLabel(issue.getState());
-    	JLabel lblAssigneeText = new JLabel(issue.getAssignee());
-    	JLabel lblFixerText = new JLabel(issue.getFixer());
+    	JTextField txtId = new JTextField(Integer.toString(issue.getId()), 2);
+    	JTextField txtTitle = new JTextField(issue.getTitle(), 30);
+    	JTextArea txtDescription = new JTextArea(issue.getDescription(), 20, 40);
+    	JScrollPane scrollDescription = new JScrollPane(txtDescription);
+    	JTextField txtInvolvedProject = new JTextField(Integer.toString(issue.getProject()), 2);
+    	JTextField txtPriority = new JTextField(issue.getPriority(), 10);
+    	JTextField txtReporter = new JTextField(issue.getReporter(), 10);
+    	JTextField txtReportedDate = new JTextField(issue.getReportedDate(), 20);
+    	JTextField txtState = new JTextField(issue.getState(), 10);
+    	JTextField cbxAssignee = new JTextField(issue.getAssignee(), 10);
+    	JTextField txtFixer = new JTextField(issue.getFixer(), 10);
+    	
+    	txtId.setEditable(false);
+    	txtTitle.setEditable(false);
+    	txtDescription.setEditable(false);
+    	txtInvolvedProject.setEditable(false);
+    	txtPriority.setEditable(false);
+    	txtReporter.setEditable(false);
+    	txtReportedDate.setEditable(false);
+    	txtState.setEditable(false);
+    	cbxAssignee.setEditable(false);;
+    	txtFixer.setEditable(false);
     	
     	firstRow.add(lblId);
-    	firstRow.add(lblIdText);
+    	firstRow.add(txtId);
     	firstRow.add(lblTitle);
-    	firstRow.add(lblTitleText);
-    	firstRow.add(Box.createVerticalStrut(100));
+    	firstRow.add(txtTitle);
+    	firstRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	secondRow.add(lblDescription);
-    	secondRow.add(lblDescriptionText);
-    	secondRow.add(Box.createVerticalStrut(100));
+    	secondRow.add(scrollDescription);
+    	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	thirdRow.add(lblInvolvedProject);
-    	thirdRow.add(lblInvolvedProjectText);
+    	thirdRow.add(txtInvolvedProject);
     	thirdRow.add(lblPriority);
-    	thirdRow.add(lblPriorityText);
-    	thirdRow.add(Box.createVerticalStrut(100));
+    	thirdRow.add(txtPriority);
+    	thirdRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	fourthRow.add(lblReporter);
-    	fourthRow.add(lblReporterText);
+    	fourthRow.add(txtReporter);
     	fourthRow.add(lblReportedDate);
-    	fourthRow.add(lblReportedDateText);
-    	fourthRow.add(Box.createVerticalStrut(100));
+    	fourthRow.add(txtReportedDate);
+    	fourthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	fifthRow.add(lblState);
-    	fifthRow.add(lblStateText);
+    	fifthRow.add(txtState);
     	fifthRow.add(lblAssignee);
-    	fifthRow.add(lblAssigneeText);
+    	fifthRow.add(cbxAssignee);
     	fifthRow.add(lblFixer);
-    	fifthRow.add(lblFixerText);
-    	fifthRow.add(Box.createVerticalStrut(100));
+    	fifthRow.add(txtFixer);
+    	fifthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
     	
     	JButton btnEdit = new JButton("Edit");
     	
@@ -838,12 +850,15 @@ public class BodyPanel extends JPanel{
 			}
 		});
     	
+    	sixthRow.add(btnEdit);
+    	sixthRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+    	
     	detailsContainer.add(firstRow);
     	detailsContainer.add(secondRow);
     	detailsContainer.add(thirdRow);
     	detailsContainer.add(fourthRow);
     	detailsContainer.add(fifthRow);
-    	detailsContainer.add(btnEdit);
+    	detailsContainer.add(sixthRow);
     	
     	add(detailsContainer);
     	add(Box.createVerticalGlue());

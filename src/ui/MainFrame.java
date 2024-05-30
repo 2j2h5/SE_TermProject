@@ -36,6 +36,7 @@ public class MainFrame extends JFrame{
 		add(header, BorderLayout.NORTH);
 		
 		JScrollPane jspScrolledSection= new JScrollPane(body);
+		jspScrolledSection.getVerticalScrollBar().setUnitIncrement(25);
 		add(jspScrolledSection, BorderLayout.CENTER);
 		
 		pack();
