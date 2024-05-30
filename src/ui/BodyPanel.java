@@ -185,7 +185,7 @@ public class BodyPanel extends JPanel{
         issueContainer.add(Box.createVerticalStrut(20));
         
         for (Issue issue : issues) {
-        	if (keyword.equals(Integer.toString(issue.getProject())) || keyword.equals(issue.getTitle())) {
+        	if (keyword.equals(Integer.toString(issue.getId())) || keyword.equals(issue.getTitle())) {
         		JPanel issuePanel = new IssuePanel(issue);
             	issueContainer.add(issuePanel);
                 issueContainer.add(Box.createVerticalStrut(10));
