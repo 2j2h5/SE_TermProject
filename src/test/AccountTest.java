@@ -8,20 +8,10 @@ import domain.Account;
 class AccountTest {
 
     @Test
-    void testGetId() {
+    void testAccount() {
         Account account = new Account("user123", "password");
         assertEquals("user123", account.getId());
-    }
-
-    @Test
-    void testGetPassword() {
-        Account account = new Account("user123", "password");
         assertEquals("password", account.getPassword());
-    }
-
-    @Test
-    void testToString() {
-        Account account = new Account("user123", "password");
         assertEquals("user123", account.toString());
     }
 }

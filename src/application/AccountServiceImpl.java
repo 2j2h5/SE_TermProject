@@ -29,32 +29,44 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 		String id = (String) attributeDict.get("id");
         String password = (String) attributeDict.get("password");
         
-        if (id == null || id.isEmpty()) return false;
-        if (password == null || password.isEmpty()) return false;
+        System.out.println("Valiation checking for id: " + id + " password: " + password + " ...");
+        
+        if (id == null || id.isEmpty()) {
+        	System.out.println("INVALID : Id is empty");
+        	return false;
+        }
+        if (password == null || password.isEmpty()) {
+        	System.out.println("INVALID : Password is empty");
+        	return false;
+        }
         
         for (Account account : dataList) {
         	if (account.getId().equals(id) ) {
+        		System.out.println("INVALID : Duplicate id");
         		return false;
         	}
         }
 
+        System.out.println("VALID");
         return true;
 	}
 	
 	@Override
 	public void requestMake() throws ValidationException {
+		System.out.println("Making new account ...");
 		if (this.checkValidation()) {
 			String id = (String) attributeDict.get("id");
 	        String password = (String) attributeDict.get("password");
 	        
 			dataList.add(new Account(id, password));
+			System.out.println("Successfully making new account for id: " + id + " password: " + password);
 		} else {
 			throw new ValidationException("Validation failed");
 		}
 	}
 
 	@Override
-	protected List<Account> loadDataFromDB() {
+	public List<Account> loadDataFromDB() {
 		
 		List<Account> accounts = new ArrayList<>();
 		
@@ -87,7 +99,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 	}
 
 	@Override
-	protected void saveDataToDB() {
+	public void saveDataToDB() {
 		
 		DBService dbService = new DBService();
     	Connection conn = dbService.getConnection();
@@ -132,7 +144,7 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 		return null;
 	}
 	
-	public List<Account> getAllAccount() {
+	public List<Account> getAllAccounts() {
 		return dataList;
 	}
 

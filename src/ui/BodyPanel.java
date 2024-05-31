@@ -561,7 +561,7 @@ public class BodyPanel extends JPanel{
 		removeAll();
 		
 		List<Project> projects = app.getProjectService().getAllProjects();
-		List<Account> accounts = app.getAccountService().getAllAccount();
+		List<Account> accounts = app.getAccountService().getAllAccounts();
     	
     	JPanel reportContainer = new JPanel();
     	
@@ -805,7 +805,7 @@ public class BodyPanel extends JPanel{
 		removeAll();
 		
 		List<Project> projects = app.getProjectService().getAllProjects();
-		List<Account> accounts = app.getAccountService().getAllAccount();
+		List<Account> accounts = app.getAccountService().getAllAccounts();
     	
     	JPanel detailsContainer = new JPanel();
     	
@@ -1069,7 +1069,7 @@ public class BodyPanel extends JPanel{
 	public void showNewProject() {
 		removeAll();
 		
-		List<Account> accounts = app.getAccountService().getAllAccount();
+		List<Account> accounts = app.getAccountService().getAllAccounts();
     	
     	JPanel newProjectContainer = new JPanel();
     	newProjectContainer.setLayout(new BoxLayout(newProjectContainer, BoxLayout.Y_AXIS));

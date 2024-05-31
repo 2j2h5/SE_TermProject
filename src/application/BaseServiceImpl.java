@@ -20,6 +20,7 @@ public abstract class BaseServiceImpl<T> implements BaseService {
 	@Override
 	public void enterInfo(String key, Object value) {
 		attributeDict.put(key, value);
+		System.out.println(key + ": " + value);
 	}
 	
 	@Override
