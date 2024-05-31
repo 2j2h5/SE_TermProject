@@ -152,12 +152,14 @@ public class BodyPanel extends JPanel{
         JPanel issueContainer = new JPanel();
         issueContainer.setLayout(new BoxLayout(issueContainer, BoxLayout.Y_AXIS));
         
-        JLabel lblProjectId = new JLabel("Project Id:");
+        JLabel lblProjectId = new JLabel("Id:");
         JLabel lblProjectName = new JLabel("Name:");
+        JLabel lblResponsiblePL = new JLabel("PL:");
         JLabel lblProjectDescription = new JLabel("Description:");
         
         JTextField txtProjectId = new JTextField(Integer.toString(project.getId()), 2);
         JTextField txtProjectName = new JTextField(project.getName(), 10);
+        JTextField txtResponsiblePL = new JTextField(project.getResponsiblePL(), 10);
         JTextArea txtProjectDescription = new JTextArea(project.getDescription(), 10, 40);
         JScrollPane scrollDescription = new JScrollPane(txtProjectDescription);
         
@@ -176,6 +178,8 @@ public class BodyPanel extends JPanel{
         secondRow.add(txtProjectId);
         secondRow.add(lblProjectName);
         secondRow.add(txtProjectName);
+        secondRow.add(lblResponsiblePL);
+        secondRow.add(txtResponsiblePL);
         thirdRow.add(lblProjectDescription);
         thirdRow.add(scrollDescription);
         
@@ -1111,20 +1115,20 @@ public class BodyPanel extends JPanel{
 				String responsiblePL = new String(((Account) cbxResponsiblePL.getSelectedItem()).getId());
 				
 				if (name.equals("")) {
-					app.getIssueService().enterInfo("name", null);
+					app.getProjectService().enterInfo("name", null);
 				} else {
-					app.getIssueService().enterInfo("name", name);
+					app.getProjectService().enterInfo("name", name);
 				}
 				if (description.equals("")) {
-					app.getIssueService().enterInfo("description", null);
+					app.getProjectService().enterInfo("description", null);
 				} else {
-					app.getIssueService().enterInfo("description", description);
+					app.getProjectService().enterInfo("description", description);
 				}
 				
 				if (responsiblePL.equals("")) {
-					app.getIssueService().enterInfo("responsiblePL", null);
+					app.getProjectService().enterInfo("responsiblePL", null);
 				} else {
-					app.getIssueService().enterInfo("responsiblePL", responsiblePL);
+					app.getProjectService().enterInfo("responsiblePL", responsiblePL);
 				}
 				
 				try {
