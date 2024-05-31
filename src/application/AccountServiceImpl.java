@@ -29,39 +29,42 @@ public class AccountServiceImpl extends BaseServiceImpl<Account> implements Acco
 		String id = (String) attributeDict.get("id");
         String password = (String) attributeDict.get("password");
         
-        System.out.println("Valiation checking for id: " + id + " password: " + password + " ...");
+        System.out.println("AccountService :: Valiation checking for");
+        System.out.println("id: " + id);
+        System.out.println("password: " + password);
+        System.out.println("...");
         
         if (id == null || id.isEmpty()) {
-        	System.out.println("INVALID : Id is empty");
+        	System.out.println("AccountService :: INVALID : Id is empty");
         	return false;
         }
         if (password == null || password.isEmpty()) {
-        	System.out.println("INVALID : Password is empty");
+        	System.out.println("AccountService :: INVALID : Password is empty");
         	return false;
         }
         
         for (Account account : dataList) {
         	if (account.getId().equals(id) ) {
-        		System.out.println("INVALID : Duplicate id");
+        		System.out.println("AccountService :: INVALID : Duplicate id");
         		return false;
         	}
         }
 
-        System.out.println("VALID");
+        System.out.println("AccountService :: VALID");
         return true;
 	}
 	
 	@Override
 	public void requestMake() throws ValidationException {
-		System.out.println("Making new account ...");
+		System.out.println("AccountService :: Making new account ...");
 		if (this.checkValidation()) {
 			String id = (String) attributeDict.get("id");
 	        String password = (String) attributeDict.get("password");
 	        
 			dataList.add(new Account(id, password));
-			System.out.println("Successfully making new account for id: " + id + " password: " + password);
+			System.out.println("AccountService :: Successfully making new account!");
 		} else {
-			throw new ValidationException("Validation failed");
+			throw new ValidationException("AccountService :: Validation failed");
 		}
 	}
 

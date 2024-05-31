@@ -28,25 +28,39 @@ public class ProjectServiceImpl extends BaseServiceImpl<Project> implements Proj
 	@Override
 	public boolean checkValidation() {
 		String name = (String) attributeDict.get("name");
-        //String description = (String) attributeDict.get("description");
+        String description = (String) attributeDict.get("description");
         String responsiblePL = (String) attributeDict.get("responsiblePL");
         
-        if (name == null || name.isEmpty()) return false;
-        if (responsiblePL == null || responsiblePL.isEmpty()) return false;
-
+        System.out.println("ProjectService :: Valiation checking for"); 
+        System.out.println("name: " + name);
+        System.out.println("description: " + description);
+        System.out.println("responsiblePL: " + responsiblePL);
+        
+        if (name == null || name.isEmpty()) {
+        	System.out.println("ProjectService :: INVALID : Name is empty");
+        	return false;
+        }
+        if (responsiblePL == null || responsiblePL.isEmpty()) {
+        	System.out.println("ProjectService :: INVALID : Responsible PL is empty");
+        	return false;
+        }
+        
+        System.out.println("ProjectService :: VALID");
         return true;
 	}
 	
 	@Override
 	public void requestMake() throws ValidationException {
+		System.out.println("ProjectService :: Making new project ...");
 		if (this.checkValidation()) {
 			String name = (String) attributeDict.get("name");
 	        String description = (String) attributeDict.get("description");
 	        String responsiblePL = (String) attributeDict.get("responsiblePL");
 	        
 			dataList.add(new Project(name, description, responsiblePL));
+			System.out.println("ProjectService :: Successfully making new project!");
 		} else {
-			throw new ValidationException("Validation failed");
+			throw new ValidationException("ProejctService :: Validation failed");
 		}
 	}
 	

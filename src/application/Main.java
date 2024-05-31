@@ -18,7 +18,7 @@ public class Main {
 		try {
 			app.getAccountService().requestMake();
 		} catch (ValidationException e) {
-			System.out.println("Admin account already exists");
+			
 		}
 		
 		

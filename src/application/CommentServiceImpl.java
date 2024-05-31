@@ -28,17 +28,22 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 	@Override
 	public boolean checkValidation() {
 		String content = (String) attributeDict.get("content");
-        //String writer = (String) attributeDict.get("writer");
-        //String writedDate = (String) attributeDict.get("writedDate");
-        //int involvedIssue = (int) attributeDict.get("involvedIssue");
+		
+		System.out.println("CommentService :: Valiation checking for"); 
+        System.out.println("content: " + content);
         
-        if (content == null || content.isEmpty()) return false;
-
+        if (content == null || content.isEmpty()) {
+        	System.out.println("CommentService :: INVALID : Content is empty");
+        	return false;
+        }
+        
+        System.out.println("CommentService :: VALID");
         return true;
 	}
 	
 	@Override
 	public void requestMake() throws ValidationException {
+		System.out.println("CommentService :: Making new comment ...");
 		if (this.checkValidation()) {
 			String content = (String) attributeDict.get("content");
 	        String writer = app.getLoggedInUser();
@@ -46,8 +51,9 @@ public class CommentServiceImpl extends BaseServiceImpl<Comment> implements Comm
 	        int involvedIssue = (int) attributeDict.get("involvedIssue");
 	        
 			dataList.add(new Comment(content, writer, writedDate, involvedIssue));
+			System.out.println("CommentService :: Successfully making new comment!");
 		} else {
-			throw new ValidationException("Validation failed");
+			throw new ValidationException("CommentService :: Validation failed");
 		}
 	}
 

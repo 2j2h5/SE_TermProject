@@ -527,14 +527,10 @@ public class BodyPanel extends JPanel{
 						app.getIssueService().enterInfo("priority", priority);
 					}
 					
-					if (app.getIssueService().checkValidation()) {
-						try {
-							app.getIssueService().requestMake();
-							showProjects();
-						} catch (ValidationException e1) {
-							e1.printStackTrace();
-						}
-					} else {
+					try {
+						app.getIssueService().requestMake();
+						showProjects();
+					} catch (ValidationException e1) {
 						JOptionPane.showMessageDialog(null, "Invalid value");
 					}
 				} else {
@@ -701,13 +697,11 @@ public class BodyPanel extends JPanel{
 						app.getIssueService().enterInfo("assignee", assignee);
 					}
 					
-					if (app.getIssueService().checkValidation()) {
-						try {
-							app.getIssueService().requestEdit(issue.getId());
-							showProjects();
-						} catch (ValidationException e1) {
-							e1.printStackTrace();
-						}
+					try {
+						app.getIssueService().requestEdit(issue.getId());
+						showProjects();
+					} catch (ValidationException e1) {
+						JOptionPane.showMessageDialog(null, "Invalid value");
 					}
 				} else {
 					JOptionPane.showMessageDialog(null, "You can report issue after log in.");
@@ -779,7 +773,6 @@ public class BodyPanel extends JPanel{
 						app.getAccountService().requestMake();
 						showProjects();
 					} catch (ValidationException e1) {
-						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "ID is not available");
 					}
 				} else {
@@ -977,9 +970,9 @@ public class BodyPanel extends JPanel{
 				if (app.isLoggedIn()) {
 					try {
 						app.getCommentService().requestMake();
+						txtComment.setText("");
 						refreshComment(issue, displayCommentContainer);
 					} catch (ValidationException e1) {
-						e1.printStackTrace();
 						JOptionPane.showMessageDialog(null, "Invalid value");
 					}
 				} else {
@@ -1117,15 +1110,27 @@ public class BodyPanel extends JPanel{
 				String description = new String(txtDescription.getText());
 				String responsiblePL = new String(((Account) cbxResponsiblePL.getSelectedItem()).getId());
 				
-				app.getProjectService().enterInfo("name", name);
-				app.getProjectService().enterInfo("description", description);
-				app.getProjectService().enterInfo("responsiblePL", responsiblePL);
+				if (name.equals("")) {
+					app.getIssueService().enterInfo("name", null);
+				} else {
+					app.getIssueService().enterInfo("name", name);
+				}
+				if (description.equals("")) {
+					app.getIssueService().enterInfo("description", null);
+				} else {
+					app.getIssueService().enterInfo("description", description);
+				}
+				
+				if (responsiblePL.equals("")) {
+					app.getIssueService().enterInfo("responsiblePL", null);
+				} else {
+					app.getIssueService().enterInfo("responsiblePL", responsiblePL);
+				}
 				
 				try {
 					app.getProjectService().requestMake();
 					showProjects();
 				} catch (ValidationException e1) {
-					e1.printStackTrace();
 					JOptionPane.showMessageDialog(null, "Invalid value");
 				}
 			}

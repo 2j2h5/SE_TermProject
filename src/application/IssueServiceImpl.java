@@ -30,14 +30,27 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 		String title = (String) attributeDict.get("title");
         String description = (String) attributeDict.get("description");
         
-        if (title == null || title.isEmpty()) return false;
-        if (description == null || description.isEmpty()) return false;
-
+        System.out.println("IssueService :: Valiation checking for");
+        System.out.println("title: " + title);
+        System.out.println("description: " + description);
+        System.out.println("...");
+        
+        if (title == null || title.isEmpty()) {
+        	System.out.println("IssueService :: INVALID : Title is empty");
+        	return false;
+        }
+        if (description == null || description.isEmpty()) {
+        	System.out.println("IssueService :: INVALID : Description is empty");
+        	return false;
+        }
+        
+        System.out.println("IssueService :: VALID");
         return true;
 	}
 	
 	@Override
 	public void requestMake() throws ValidationException {
+		System.out.println("IssueService :: Making new issue ...");
 		if (this.checkValidation()) {
 			String title = (String) attributeDict.get("title");
 	        String description = (String) attributeDict.get("description");
@@ -48,8 +61,9 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	        String state = "new";
 	        
 			dataList.add(new Issue(title, description, priority, involvedProject, reporter, reportedDate, state));
+			System.out.println("IssueService :: Successfully making new issue!");
 		} else {
-			throw new ValidationException("Validation failed");
+			throw new ValidationException("IssueService :: Validation failed");
 		}
 	}
 	
@@ -120,7 +134,7 @@ public class IssueServiceImpl extends BaseServiceImpl<Issue> implements IssueSer
 	        if ((issue.getFixer() == null && fixer != null) || (issue.getFixer() != null && !issue.getFixer().equals(fixer))) issue.setFixer(fixer);
 	        
 		} else {
-			throw new ValidationException("Validation failed");
+			throw new ValidationException("IssueService :: Validation failed");
 		}
 	}
 	

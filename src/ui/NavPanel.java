@@ -90,14 +90,22 @@ public class NavPanel extends JPanel {
 		btnNewAccount.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				body.showNewAccount();
+				if (app.isLoggedIn() && app.getLoggedInUser().equals("admin")) {
+					body.showNewAccount();
+				} else {
+					JOptionPane.showMessageDialog(null, "Only admin can create new account");
+				}
 			}
 		});
 		
 		btnNewProject.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				body.showNewProject();
+				if (app.isLoggedIn() && app.getLoggedInUser().equals("admin")) {
+					body.showNewProject();
+				} else {
+					JOptionPane.showMessageDialog(null, "Only admin can create new account");
+				}
 			}
 		});
 		
