@@ -939,6 +939,7 @@ public class BodyPanel extends JPanel{
 	}
 	
 	public void showComment(Issue issue) {
+		removeAll();
 	JPanel mainContainer = new JPanel();
 		mainContainer.setLayout(new BorderLayout());
 	    
