@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.CardLayout;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -938,11 +939,12 @@ public class BodyPanel extends JPanel{
 	}
 	
 	public void showComment(Issue issue) {
-		removeAll();
-        
+	JPanel mainContainer = new JPanel();
+		mainContainer.setLayout(new BorderLayout());
+	    
         JPanel addCommentContainer = new JPanel();
         JPanel displayCommentContainer = new JPanel();
-        
+
         addCommentContainer.setLayout(new BoxLayout(addCommentContainer, BoxLayout.Y_AXIS));
         displayCommentContainer.setLayout(new BoxLayout(displayCommentContainer, BoxLayout.Y_AXIS));
         
@@ -995,15 +997,18 @@ public class BodyPanel extends JPanel{
     	secondRow.add(btnAddComment);
     	secondRow.add(btnBack);
     	secondRow.add(Box.createVerticalStrut(VERTICAL_STRUT));
+    	
         addCommentContainer.add(firstRow);
         addCommentContainer.add(secondRow);
-        
-        add(addCommentContainer);
         refreshComment(issue, displayCommentContainer);
-        add(displayCommentContainer);
-        add(Box.createVerticalGlue());
+        
+        mainContainer.add(addCommentContainer,BorderLayout.NORTH);
+        mainContainer.add(displayCommentContainer,BorderLayout.CENTER);
+        
+        add(mainContainer);
         revalidate();
         repaint();
+
         
         state = "comment";
 	}
